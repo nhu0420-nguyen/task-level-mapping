@@ -1,0 +1,1994 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bản đồ phân công công việc — EB &amp; EX Team</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F6F1E2;
+  --card:#FFFDF7;
+  --ink:#222229;
+  --ink-soft:#3C3B42;
+  --muted:#79705f;
+  --rule:#DED1AE;
+  --teal:#2F6F62;
+  --teal-soft:#E4EEE9;
+  --kraft:#B07A33;
+  --kraft-soft:#F3E6D2;
+  --support:#8d8475;
+  --inputc:#56758a;
+  --review:#7c5a72;
+  --radius:10px;
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink-soft);
+  font-family:'Inter',system-ui,sans-serif;
+  font-size:15.5px;
+  line-height:1.55;
+}
+h1,h2,h3{font-family:'Fraunces',serif; color:var(--ink); margin:0;}
+.lbl{display:block; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); margin-bottom:2px;}
+
+/* ---------- Hero ---------- */
+.hero{
+  background:
+    radial-gradient(circle at 85% -10%, rgba(176,122,51,.16), transparent 55%),
+    var(--ink);
+  color:#F4ECDA;
+  padding:54px 24px 38px;
+  border-bottom:6px solid var(--kraft);
+}
+.hero__inner{max-width:1180px; margin:0 auto;}
+.hero__stamp{
+  display:inline-block;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px; letter-spacing:.14em;
+  border:1px solid rgba(244,236,218,.4);
+  padding:5px 10px;
+  border-radius:3px;
+  color:#E7CBA0;
+  margin-bottom:18px;
+}
+.hero h1{color:#F8F2E2; font-size:clamp(28px,4vw,42px); font-weight:600; line-height:1.18;}
+.hero__sub{color:#CDA463; font-weight:500;}
+.hero__lede{max-width:640px; color:#D8CFB8; margin-top:14px; font-size:15.5px;}
+.hero__stats{display:flex; gap:34px; margin-top:30px; flex-wrap:wrap;}
+.stat{display:flex; flex-direction:column;}
+.stat__num{font-family:'Fraunces',serif; font-size:30px; color:#F4ECDA; font-weight:600;}
+.stat__label{font-size:12.5px; color:#B7AD92; margin-top:2px;}
+
+/* ---------- Tabs (folder tabs) ---------- */
+.tabs{
+  display:flex; gap:6px;
+  max-width:1180px; margin:0 auto;
+  padding:0 24px;
+  position:sticky; top:0; z-index:20;
+  background:var(--paper);
+  padding-top:14px;
+}
+.tab{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12.5px; letter-spacing:.04em; text-transform:uppercase;
+  background:#EDE4C9; color:var(--muted);
+  border:1px solid var(--rule);
+  border-bottom:none;
+  padding:11px 18px 9px;
+  border-radius:8px 8px 0 0;
+  cursor:pointer;
+  transform:translateY(6px);
+  transition:transform .15s ease, color .15s ease, background .15s ease;
+}
+.tab:hover{transform:translateY(2px); color:var(--ink);}
+.tab.is-active{
+  background:var(--card); color:var(--ink);
+  transform:translateY(0);
+  border-bottom:1px solid var(--card);
+  box-shadow:0 -2px 10px rgba(0,0,0,.05);
+}
+.tab--ink.is-active{border-top:3px solid var(--ink);}
+.tab--teal.is-active{border-top:3px solid var(--teal);}
+.tab--kraft.is-active{border-top:3px solid var(--kraft);}
+
+main{max-width:1180px; margin:0 auto; padding:0 24px 60px;}
+.panel{
+  display:none;
+  background:var(--card);
+  border:1px solid var(--rule);
+  border-top:none;
+  border-radius:0 0 var(--radius) var(--radius);
+  padding:34px 36px 44px;
+}
+.panel.is-active{display:block;}
+
+.section-head{padding-bottom:18px; margin-bottom:26px; border-bottom:1px solid var(--rule);}
+.section-eyebrow{font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted);}
+.section-head h2{font-size:26px; margin-top:6px;}
+.section-head--teal{border-bottom-color:var(--teal);}
+.section-head--teal .section-eyebrow{color:var(--teal);}
+.section-head--kraft{border-bottom-color:var(--kraft);}
+.section-head--kraft .section-eyebrow{color:var(--kraft);}
+.lede{color:var(--ink-soft); font-size:15.5px; max-width:760px;}
+.muted-note{color:var(--muted); font-size:13.5px;}
+
+.block-title{font-size:17px; margin:34px 0 14px; padding-top:4px;}
+.block-title__hint{font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--muted); text-transform:none; font-weight:500; margin-left:8px;}
+
+/* ---------- cards / bullets ---------- */
+.card-grid{display:grid; gap:18px; margin-top:18px;}
+.card-grid--2{grid-template-columns:1fr 1fr;}
+.card{
+  background:#FBF7EC; border:1px solid var(--rule); border-radius:var(--radius);
+  padding:18px 20px;
+}
+.card--flag{background:#FBF1EC; border-color:#E6C9B8;}
+.card__title{font-size:15px; margin-bottom:8px; font-family:'Inter',sans-serif; font-weight:700; color:var(--ink);}
+.card__title--teal{color:var(--teal);}
+.card__title--kraft{color:var(--kraft);}
+.bullets{margin:0; padding-left:18px;}
+.bullets li{margin-bottom:5px; font-size:14px;}
+
+/* ---------- legend ---------- */
+.legend-row{display:grid; grid-template-columns:repeat(4,1fr); gap:12px;}
+.legend-card{
+  display:flex; flex-direction:column; gap:8px;
+  background:#FBF7EC; border:1px solid var(--rule); border-radius:var(--radius);
+  padding:14px 14px 16px;
+}
+.legend-name{font-weight:700; font-size:13.5px; color:var(--ink);}
+.legend-desc{font-size:12.5px; color:var(--muted); margin-top:3px;}
+.legend-lv{align-self:flex-start;}
+
+/* ---------- person cards ---------- */
+.person-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
+.person-card{
+  background:#FBF7EC; border:1px solid var(--rule); border-radius:var(--radius);
+  padding:18px;
+}
+.person-card__top{display:flex; align-items:center; justify-content:space-between; margin-bottom:4px;}
+.person-name{font-family:'Fraunces',serif; font-size:19px; color:var(--ink); font-weight:600;}
+.person-role{font-size:12.5px; color:var(--muted); margin-bottom:12px;}
+.person-area, .person-tier{font-size:13px; margin-top:10px;}
+.person-summary{font-size:13.5px; margin-top:10px; line-height:1.5;}
+
+/* ---------- accordions ---------- */
+.acc-list{display:flex; flex-direction:column; gap:8px;}
+.group-acc, .person-acc{
+  border:1px solid var(--rule); border-radius:8px; background:#FBF7EC; overflow:hidden;
+}
+.group-acc summary, .person-acc summary{
+  list-style:none; cursor:pointer;
+  display:flex; align-items:center; gap:12px;
+  padding:13px 16px; font-weight:600; color:var(--ink);
+}
+.group-acc summary::-webkit-details-marker, .person-acc summary::-webkit-details-marker{display:none;}
+.group-acc summary::before, .person-acc summary::before{
+  content:'+'; font-family:'IBM Plex Mono',monospace; color:var(--muted);
+  width:16px; text-align:center; flex-shrink:0;
+}
+.group-acc[open] summary::before, .person-acc[open] summary::before{content:'–';}
+.group-name{flex:1; font-size:14.5px;}
+.group-sub{font-size:12px; color:var(--muted); font-weight:400;}
+.group-count{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--muted); text-transform:uppercase;}
+
+.table-wrap{overflow-x:auto; border-top:1px solid var(--rule);}
+.matrix-table{width:100%; border-collapse:collapse; font-size:12.5px; background:var(--card);}
+.matrix-table th{
+  text-align:left; font-family:'IBM Plex Mono',monospace; font-size:10px;
+  letter-spacing:.03em; text-transform:uppercase; color:var(--muted);
+  padding:9px 8px; border-bottom:1px solid var(--rule); white-space:normal;
+}
+.matrix-table td{padding:8px 8px; border-bottom:1px solid #EEE7D4; vertical-align:top;}
+.matrix-table tr:last-child td{border-bottom:none;}
+.task-cell{min-width:180px;}
+.area-cell{min-width:130px; color:var(--ink-soft);}
+.group-cell{min-width:120px; color:var(--ink-soft);}
+.lvl-cell{white-space:nowrap;}
+
+/* ---------- level chip ---------- */
+.lvl{
+  font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:600;
+  padding:3px 7px; border-radius:4px; white-space:nowrap; display:inline-block;
+}
+.lvl--l4{background:var(--ink); color:#F4ECDA;}
+.lvl--l3{background:var(--teal); color:#fff;}
+.lvl--l2{background:var(--kraft-soft); color:var(--kraft); border:1px solid var(--kraft);}
+.lvl--l1{background:#EFEAE0; color:var(--muted); border:1px solid var(--rule);}
+.lvl--lx{background:#EFEAE0; color:var(--ink-soft); border:1px solid var(--rule);}
+
+/* ---------- role badges ---------- */
+.badge{
+  font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:600;
+  letter-spacing:.02em; padding:2px 6px; border-radius:4px; white-space:nowrap; display:inline-block;
+}
+.badge--lead{background:var(--ink); color:#F4ECDA;}
+.badge--owner{background:var(--teal); color:#fff;}
+.badge--doer{background:var(--kraft); color:#fff;}
+.badge--support{background:#EFEAE0; color:var(--support); border:1px solid var(--support);}
+.badge--input{background:#E7EEF1; color:var(--inputc); border:1px solid var(--inputc);}
+.badge--review{background:#F1E7EE; color:var(--review); border:1px solid var(--review);}
+.badge--other{background:#EFEAE0; color:var(--ink-soft);}
+.badge-empty{color:#C9BE9F;}
+
+/* ---------- footer ---------- */
+.foot{max-width:1180px; margin:0 auto; padding:18px 24px 50px; color:var(--muted); font-size:12.5px; text-align:center;}
+
+/* ---------- responsive ---------- */
+@media (max-width:760px){
+  .card-grid--2{grid-template-columns:1fr;}
+  .legend-row{grid-template-columns:repeat(2,1fr);}
+  .person-grid{grid-template-columns:1fr;}
+  .panel{padding:26px 18px 36px;}
+  .hero{padding:40px 18px 30px;}
+  .hero__stats{gap:22px;}
+}
+@media (prefers-reduced-motion: reduce){
+  *{transition:none !important;}
+}
+
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero__inner">
+    <div class="hero__stamp">HRT · TEAM LEADER CATCH-UP</div>
+    <h1>Bản đồ phân công công việc<br><span class="hero__sub">EB Team &amp; EX Team</span></h1>
+    <p class="hero__lede">Tài liệu chuẩn bị gửi trước buổi họp — phân tầng công việc theo cấp độ, theo người phụ trách và theo nhóm công việc, để cả team cùng nhìn vào một bản đồ trước khi thảo luận.</p>
+    <div class="hero__stats">
+      <div class="stat"><span class="stat__num">9</span><span class="stat__label">lượt phụ trách (EB 3 · EX 6)</span></div>
+      <div class="stat"><span class="stat__num">17</span><span class="stat__label">nhóm công việc</span></div>
+      <div class="stat"><span class="stat__num">146</span><span class="stat__label">đầu việc đã ghi nhận</span></div>
+    </div>
+  </div>
+</header>
+
+<nav class="tabs" id="tabs">
+  <button class="tab tab--ink is-active" data-target="tongquan">Tổng quan</button>
+  <button class="tab tab--teal" data-target="ebteam">EB Team</button>
+  <button class="tab tab--kraft" data-target="exteam">EX Team</button>
+</nav>
+
+<main>
+
+<section id="tongquan" class="panel is-active">
+  <div class="section-head">
+    <span class="section-eyebrow">Tổng quan</span>
+    <h2>Vì sao cần bản đồ công việc này</h2>
+  </div>
+  <p class="lede">Bản đồ công việc để phân định ai làm gì — Delegate như nào. Hai sheet EB và EX dưới đây là bản phân tầng trả lời cho câu hỏi đó: ai đang giữ phần nào, ở cấp độ nào, và ai là người chốt khi có việc phát sinh.</p>
+
+  <div class="card-grid card-grid--2">
+    <div class="card">
+      <h3 class="card__title card__title--kraft">Phạm vi công việc — EX</h3>
+      <ul class="bullets"><li>Full Cycle tuyển dụng: screening, phỏng vấn, onboarding</li><li>Report on demand, báo cáo theo dõi chỉ số tuyển dụng, xây scheme</li><li>Theo dõi &amp; phân tích chỉ số tuyển dụng</li><li>Quản lý &amp; theo dõi scheme, lâp kế hoạch ngân sách, theo dõi scheme và quản lý ngân sách</li><li>Sourcing mảng agency và Fillipino candidates</li><li>Budget planning &amp; follow up</li><li>Petty cash</li><li>Tư vấn cho staff, tư vấn cho Vân/ Khánh các cases đặc biệt</li><li>Lớp TV</li><li>Competitor analysis</li></ul>
+    </div>
+    <div class="card">
+      <h3 class="card__title card__title--teal">Phạm vi công việc — EB</h3>
+      <ul class="bullets"><li>Training staff - quản lý performance &amp; tiến độ training</li><li>Theo dõi các chỉ số, báo cáo</li><li>Planning quý, năm, tư vấn plan events, plan tháng</li><li>Workload </li><li>Quản lý art direction, feedback</li><li>Proofread content</li><li>Quản lý orders + hiệu suất digital ads </li><li>Quản lý orders + hiệu suất website</li><li>Budget planning</li><li>Lâp kế hoạch ngân sách và quản lý ngân sách, quản lý về orders và đánh giá hiệu suất của digital ads</li><li>Theo dõi tiến độ training NV mới; mong muốn theo dõi sát hiệu quả tuyển dụng</li></ul>
+    </div>
+  </div>
+
+  <div class="card-grid card-grid--2">
+    <div class="card card--flag">
+      <h3 class="card__title">Khó khăn</h3>
+      <p class="muted-note">Chưa có ghi nhận cụ thể trong file — để mở cho buổi họp cùng thảo luận.</p>
+    </div>
+    <div class="card">
+      <h3 class="card__title">Phát triển / cần cải thiện (EB)</h3>
+      <ul class="bullets"><li>Tracking dữ liệu, phân tích hiệu suất</li><li>Báo cáo</li><li>Website &amp; digital ads</li></ul>
+      <ul class="bullets"><li>EB cần Stay in touch với ứng viên qualified</li></ul>
+    </div>
+  </div>
+
+  <div class="card-grid card-grid--2">
+    <div class="card">
+      <h3 class="card__title">Ghi chú khác</h3>
+      <ul class="bullets"><li>Template cho sompetitor analysis</li><li>Benchmarking exercise là gì</li></ul>
+    </div>
+  </div>
+</section>
+
+<section id="ebteam" class="panel">
+  <div class="section-head section-head--teal">
+    <span class="section-eyebrow">EB Team</span>
+    <h2>Employer Branding — phân tầng công việc</h2>
+    <p class="lede">3 người phụ trách · 9 nhóm công việc · 26 đầu việc theo nhóm</p>
+  </div>
+
+  <h3 class="block-title">Quy ước cấp độ công việc</h3>
+  <div class="legend-row">
+        <div class="legend-card">
+          <div class="legend-lv lvl lvl--l4">L4</div>
+          <div class="legend-body">
+            <div class="legend-name">Strategic / Lead</div>
+            <div class="legend-desc">Định hướng, lập kế hoạch, chốt ưu tiên, quản lý hiệu suất/ngân sách/stakeholder.</div>
+          </div>
+        </div>
+        <div class="legend-card">
+          <div class="legend-lv lvl lvl--l3">L3</div>
+          <div class="legend-body">
+            <div class="legend-name">Senior Direction / Senior Execution</div>
+            <div class="legend-desc">Lên direction, review chất lượng, điều phối nhiều bên, xử lý task cần judgment.</div>
+          </div>
+        </div>
+        <div class="legend-card">
+          <div class="legend-lv lvl lvl--l2">L2</div>
+          <div class="legend-body">
+            <div class="legend-name">Skilled Operation</div>
+            <div class="legend-desc">Vận hành theo framework/template/checklist, cần hiểu context và có kỹ năng chuyên môn.</div>
+          </div>
+        </div>
+        <div class="legend-card">
+          <div class="legend-lv lvl lvl--l1">L1</div>
+          <div class="legend-body">
+            <div class="legend-name">Routine / Admin</div>
+            <div class="legend-desc">Task lặp lại, quy trình rõ, ít cần ra quyết định; có thể train xuống cấp dưới khi có checklist.</div>
+          </div>
+        </div></div>
+
+  <h3 class="block-title">Tóm tắt theo người</h3>
+  <div class="person-grid">
+        <div class="person-card">
+          <div class="person-card__top">
+            <span class="person-name">Như</span>
+            <span class="lvl lvl--l4">L4</span>
+          </div>
+          <div class="person-role">Team Leader</div>
+          <div class="person-area"><span class="lbl">Mảng việc chính</span>Planning, workload, performance, budget, governance</div>
+          <div class="person-summary">EB planning quý/năm; quản lý staff workload; theo dõi chỉ số &amp; báo cáo; proofread thiết kế/nội dung; lập &amp; quản lý ngân sách; quản lý order/performance Digital Ads; quản lý HRT website; theo dõi training nhân viên mới.</div>
+          <div class="person-tier"><span class="lbl">Tầng trách nhiệm</span>Lead / chốt direction / quản trị hiệu suất</div>
+        </div>
+        <div class="person-card">
+          <div class="person-card__top">
+            <span class="person-name">Dũng</span>
+            <span class="lvl lvl--l3">L3</span>
+          </div>
+          <div class="person-role">Senior Officer</div>
+          <div class="person-area"><span class="lbl">Mảng việc chính</span>Content direction, communication, creative direction, workflow</div>
+          <div class="person-summary">Planning tháng/tuần; direction nội dung EB external/internal; lead communication cho campaign/event; review art direction/layout/message; quản lý workflow content, website, sales kit, EB handbook và intern/content process.</div>
+          <div class="person-tier"><span class="lbl">Tầng trách nhiệm</span>Senior direction / lead execution</div>
+        </div>
+        <div class="person-card">
+          <div class="person-card__top">
+            <span class="person-name">Diệu</span>
+            <span class="lvl lvl--l2">L2–L3 / L1–L2</span>
+          </div>
+          <div class="person-role">Senior Officer</div>
+          <div class="person-area"><span class="lbl">Mảng việc chính</span>RMKT operation, design, reporting, payment/admin</div>
+          <div class="person-summary">Vận hành ads end-to-end; check materials, tạo UTM, gửi order, theo dõi ads; design execution; update report theo template; payment operation, PO, budget tracker; merchandise/admin routine.</div>
+          <div class="person-tier"><span class="lbl">Tầng trách nhiệm</span>Skilled operation / routine execution</div>
+        </div></div>
+
+  <h3 class="block-title">Ma trận theo 8 nhóm công việc <span class="block-title__hint">Như · Dũng · Diệu</span></h3>
+  <p class="muted-note">Bấm vào từng nhóm để xem chi tiết đầu việc và vai trò (Lead / Owner / Input / Review) của từng người.</p>
+  <div class="acc-list">
+    
+        <details class="group-acc" open>
+          <summary>
+            <span class="group-name">Planning</span>
+            <span class="group-count">3 đầu việc</span>
+          </summary>
+          <div class="table-wrap">
+            <table class="matrix-table">
+              <thead><tr><th>Cấp độ</th><th>Đầu việc cụ thể</th><th>Như</th><th>Dũng</th><th>Diệu</th></tr></thead>
+              <tbody>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              
+              <td class="task-cell">EB planning theo quý/năm; định hướng EB và xác định ưu tiên lớn theo giai đoạn.</td>
+              <td><span class="badge badge--lead">Lead</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              
+              <td class="task-cell">Planning theo tháng/tuần cho content, campaign, event timeline và phân bổ owner.</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge badge--owner">Owner</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2–L3</span></td>
+              
+              <td class="task-cell">Planning theo tháng/tuần cho execution: RMKT, ads, design, report, payment.</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--owner">Owner</span></td>
+            </tr></tbody>
+            </table>
+          </div>
+        </details>
+        <details class="group-acc" >
+          <summary>
+            <span class="group-name">Staff workload &amp; training</span>
+            <span class="group-count">1 đầu việc</span>
+          </summary>
+          <div class="table-wrap">
+            <table class="matrix-table">
+              <thead><tr><th>Cấp độ</th><th>Đầu việc cụ thể</th><th>Như</th><th>Dũng</th><th>Diệu</th></tr></thead>
+              <tbody>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              
+              <td class="task-cell">Staff workload planning &amp; monitoring; theo dõi tiến độ training nhân viên mới.</td>
+              <td><span class="badge badge--lead">Lead</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr></tbody>
+            </table>
+          </div>
+        </details>
+        <details class="group-acc" >
+          <summary>
+            <span class="group-name">RMKT / Digital Ads</span>
+            <span class="group-count">4 đầu việc</span>
+          </summary>
+          <div class="table-wrap">
+            <table class="matrix-table">
+              <thead><tr><th>Cấp độ</th><th>Đầu việc cụ thể</th><th>Như</th><th>Dũng</th><th>Diệu</th></tr></thead>
+              <tbody>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              
+              <td class="task-cell">RMKT strategy &amp; performance direction; quản lý order, đánh giá hiệu suất và chốt hướng tối ưu.</td>
+              <td><span class="badge badge--lead">Lead</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              
+              <td class="task-cell">RMKT content &amp; creative direction; direction message/angle, review creative &amp; copy.</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge badge--input">Input</span></td><td><span class="badge badge--owner">Owner</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2–L3</span></td>
+              
+              <td class="task-cell">RMKT execution &amp; operation; nhận order, check materials, tạo UTM, gửi order, theo dõi ads.</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--owner">Owner</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2–L3</span></td>
+              
+              <td class="task-cell">Ads report &amp; performance operation; clean data, mapping, update report Meta/Google theo template.</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--owner">Owner</span></td>
+            </tr></tbody>
+            </table>
+          </div>
+        </details>
+        <details class="group-acc" >
+          <summary>
+            <span class="group-name">EB Strategy &amp; External Communication</span>
+            <span class="group-count">3 đầu việc</span>
+          </summary>
+          <div class="table-wrap">
+            <table class="matrix-table">
+              <thead><tr><th>Cấp độ</th><th>Đầu việc cụ thể</th><th>Như</th><th>Dũng</th><th>Diệu</th></tr></thead>
+              <tbody>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              
+              <td class="task-cell">EB strategy &amp; content governance; định hướng EVP, content pillars, duyệt message quan trọng.</td>
+              <td><span class="badge badge--lead">Lead</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              
+              <td class="task-cell">External communication planning &amp; content direction; direction/review bài EB external.</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge badge--owner">Owner</span></td><td><span class="badge badge--input">Input</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              
+              <td class="task-cell">External communication execution &amp; design; thực hiện content/design/upload theo plan.</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--owner">Owner</span></td>
+            </tr></tbody>
+            </table>
+          </div>
+        </details>
+        <details class="group-acc" >
+          <summary>
+            <span class="group-name">Internal Communication</span>
+            <span class="group-count">3 đầu việc</span>
+          </summary>
+          <div class="table-wrap">
+            <table class="matrix-table">
+              <thead><tr><th>Cấp độ</th><th>Đầu việc cụ thể</th><th>Như</th><th>Dũng</th><th>Diệu</th></tr></thead>
+              <tbody>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3–L4</span></td>
+              
+              <td class="task-cell">Internal communication direction &amp; evaluation; mục tiêu, tiêu chí đánh giá hiệu quả.</td>
+              <td><span class="badge badge--lead">Lead</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              
+              <td class="task-cell">Internal communication planning &amp; lead execution; lead plan, viết/review nội dung sự kiện.</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge badge--owner">Owner</span></td><td><span class="badge badge--input">Input</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              
+              <td class="task-cell">Internal communication execution &amp; logistics support; design, newsletter, timeline, logistics.</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge badge--owner">Owner</span></td><td><span class="badge badge--input">Input</span></td>
+            </tr></tbody>
+            </table>
+          </div>
+        </details>
+        <details class="group-acc" >
+          <summary>
+            <span class="group-name">Creative &amp; Design</span>
+            <span class="group-count">3 đầu việc</span>
+          </summary>
+          <div class="table-wrap">
+            <table class="matrix-table">
+              <thead><tr><th>Cấp độ</th><th>Đầu việc cụ thể</th><th>Như</th><th>Dũng</th><th>Diệu</th></tr></thead>
+              <tbody>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3–L4</span></td>
+              
+              <td class="task-cell">Quality control cho thiết kế/nội dung quan trọng trước khi publish hoặc gửi stakeholder.</td>
+              <td><span class="badge badge--review">Review</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              
+              <td class="task-cell">Creative direction &amp; design review; art direction, review layout/message/brand consistency.</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge badge--input">Input</span></td><td><span class="badge badge--owner">Owner</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              
+              <td class="task-cell">Design execution &amp; asset management; thiết kế creative, quản lý source ảnh/template/video stock.</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--owner">Owner</span></td>
+            </tr></tbody>
+            </table>
+          </div>
+        </details>
+        <details class="group-acc" >
+          <summary>
+            <span class="group-name">Report &amp; Data</span>
+            <span class="group-count">3 đầu việc</span>
+          </summary>
+          <div class="table-wrap">
+            <table class="matrix-table">
+              <thead><tr><th>Cấp độ</th><th>Đầu việc cụ thể</th><th>Như</th><th>Dũng</th><th>Diệu</th></tr></thead>
+              <tbody>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              
+              <td class="task-cell">Report framework &amp; insight direction; chốt framework, chỉ số theo dõi, hướng đọc performance.</td>
+              <td><span class="badge badge--lead">Lead</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--input">Input</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2–L3</span></td>
+              
+              <td class="task-cell">Content performance input; review hiệu quả nội dung/campaign ở góc độ qualitative.</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge badge--owner">Owner</span></td><td><span class="badge badge--input">Input</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              
+              <td class="task-cell">Report execution &amp; data operation; collect/clean/mapping/pivot data, update report theo template.</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--owner">Owner</span></td>
+            </tr></tbody>
+            </table>
+          </div>
+        </details>
+        <details class="group-acc" >
+          <summary>
+            <span class="group-name">Budget &amp; Payment</span>
+            <span class="group-count">2 đầu việc</span>
+          </summary>
+          <div class="table-wrap">
+            <table class="matrix-table">
+              <thead><tr><th>Cấp độ</th><th>Đầu việc cụ thể</th><th>Như</th><th>Dũng</th><th>Diệu</th></tr></thead>
+              <tbody>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              
+              <td class="task-cell">Budget planning &amp; budget control; lập kế hoạch, kiểm soát và điều chỉnh ngân sách.</td>
+              <td><span class="badge badge--lead">Lead</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--input">Input</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l1">L1–L2</span></td>
+              
+              <td class="task-cell">Payment operation &amp; actual tracking; phân tách chi phí, follow PO, actual spending.</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--owner">Owner</span></td>
+            </tr></tbody>
+            </table>
+          </div>
+        </details>
+        <details class="group-acc" >
+          <summary>
+            <span class="group-name">Stakeholder, Workflow &amp; Admin Operations</span>
+            <span class="group-count">4 đầu việc</span>
+          </summary>
+          <div class="table-wrap">
+            <table class="matrix-table">
+              <thead><tr><th>Cấp độ</th><th>Đầu việc cụ thể</th><th>Như</th><th>Dũng</th><th>Diệu</th></tr></thead>
+              <tbody>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              
+              <td class="task-cell">Stakeholder alignment &amp; resource planning; làm việc với stakeholder chính và xử lý escalation.</td>
+              <td><span class="badge badge--lead">Lead</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3–L4</span></td>
+              
+              <td class="task-cell">HRT recruitment website management; nội dung, UX, landing page, data issue, phối hợp IT/MKT.</td>
+              <td><span class="badge badge--lead">Lead</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2–L3</span></td>
+              
+              <td class="task-cell">Workflow coordination &amp; documentation; chuẩn hóa quy trình, handbook, content/website/sales kit workflow.</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge badge--owner">Owner</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l1">L1–L2</span></td>
+              
+              <td class="task-cell">Operation coordination &amp; admin execution; merchandise, book phòng, chia PIC, task take-turns.</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--owner">Owner</span></td>
+            </tr></tbody>
+            </table>
+          </div>
+        </details>
+  </div>
+
+  <h3 class="block-title">Chi tiết theo từng người</h3>
+  <div class="acc-list">
+    
+        <details class="person-acc">
+          <summary>
+            <span class="group-name">Như</span>
+            <span class="group-sub">Team Leader</span>
+            <span class="group-count">8 đầu việc</span>
+          </summary>
+          <div class="table-wrap">
+            <table class="matrix-table">
+              <thead><tr><th>Cấp độ</th><th>Nhóm công việc</th><th>Đầu việc cụ thể</th></tr></thead>
+              <tbody>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              <td class="group-cell">Planning</td>
+              <td class="task-cell">EB planning theo quý/năm; xác định direction, ưu tiên lớn và action plan theo giai đoạn.</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              <td class="group-cell">Staff workload</td>
+              <td class="task-cell">Theo dõi workload team, phân bổ nguồn lực, điều chỉnh priority khi có task phát sinh hoặc mùa cao điểm.</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              <td class="group-cell">Performance &amp; reporting</td>
+              <td class="task-cell">Theo dõi chỉ số và báo cáo; chốt cách đọc performance và định hướng cải thiện.</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3–L4</span></td>
+              <td class="group-cell">Quality control</td>
+              <td class="task-cell">Proofreading thiết kế và nội dung; review message, layout, brand consistency và tính phù hợp với direction.</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              <td class="group-cell">Budget</td>
+              <td class="task-cell">Lập kế hoạch ngân sách và quản lý ngân sách theo tháng/quý/năm; kiểm soát actual spending ở cấp tổng quan.</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              <td class="group-cell">Digital ads</td>
+              <td class="task-cell">Quản lý order và đánh giá hiệu suất digital ads; review performance Meta/Google/TikTok và làm việc với Digital MKT khi cần.</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3–L4</span></td>
+              <td class="group-cell">HRT website</td>
+              <td class="task-cell">Quản lý HRT recruitment website ở cấp nội dung, UX, landing page, data issue và phối hợp IT/MKT khi cần.</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              <td class="group-cell">People development</td>
+              <td class="task-cell">Theo dõi tiến độ training nhân viên mới; checkpoint năng lực nhận task và điều chỉnh lộ trình training khi cần.</td>
+            </tr></tbody>
+            </table>
+          </div>
+        </details>
+        <details class="person-acc">
+          <summary>
+            <span class="group-name">Dũng</span>
+            <span class="group-sub">Senior Officer</span>
+            <span class="group-count">7 đầu việc</span>
+          </summary>
+          <div class="table-wrap">
+            <table class="matrix-table">
+              <thead><tr><th>Cấp độ</th><th>Nhóm công việc</th><th>Đầu việc cụ thể</th></tr></thead>
+              <tbody>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="group-cell">Planning</td>
+              <td class="task-cell">Planning theo tháng/tuần cho content, campaign, event timeline và phân bổ owner theo direction chung.</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="group-cell">Content direction</td>
+              <td class="task-cell">External communication planning &amp; content direction; lên hướng nội dung, brief content, review message cho social/web/blog/sales kit.</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="group-cell">Internal communication</td>
+              <td class="task-cell">Internal communication planning &amp; lead execution; lead communication flow cho event/internal campaign, newsletter, social post, script, slide brief.</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="group-cell">Creative direction</td>
+              <td class="task-cell">Creative direction &amp; design review; đưa art direction, review layout/message/visual consistency cho assets quan trọng.</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="group-cell">Digital ads</td>
+              <td class="task-cell">RMKT content &amp; creative direction; viết hoặc review text/script/angle cho ads, PMax và recruitment creatives.</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2–L3</span></td>
+              <td class="group-cell">Workflow management</td>
+              <td class="task-cell">Workflow coordination &amp; documentation; quản lý workflow content, website, sales kit, EB handbook, intern/content process.</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2–L3</span></td>
+              <td class="group-cell">Performance input</td>
+              <td class="task-cell">Content performance review; góp ý hiệu quả nội dung/campaign ở góc độ message, format, creative.</td>
+            </tr></tbody>
+            </table>
+          </div>
+        </details>
+        <details class="person-acc">
+          <summary>
+            <span class="group-name">Diệu</span>
+            <span class="group-sub">Senior Officer</span>
+            <span class="group-count">9 đầu việc</span>
+          </summary>
+          <div class="table-wrap">
+            <table class="matrix-table">
+              <thead><tr><th>Cấp độ</th><th>Nhóm công việc</th><th>Đầu việc cụ thể</th></tr></thead>
+              <tbody>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2–L3</span></td>
+              <td class="group-cell">Planning</td>
+              <td class="task-cell">Planning theo tháng/tuần cho execution; sắp xếp timeline ads, design, report, event assets và task vận hành.</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2–L3</span></td>
+              <td class="group-cell">Digital ads</td>
+              <td class="task-cell">RMKT execution &amp; operation; nhận order, check materials, tạo UTM, gửi order Digital MKT, theo dõi ads, cập nhật tracker.</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2–L3</span></td>
+              <td class="group-cell">Ads reporting</td>
+              <td class="task-cell">Ads report &amp; performance operation; clean data, mapping, cập nhật report Meta/Google theo template và chuẩn bị nhận xét ban đầu khi cần.</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="group-cell">Content execution</td>
+              <td class="task-cell">External communication execution &amp; design; viết/thiết kế/đăng bài social, website, microsite, newsletter theo plan có sẵn.</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="group-cell">Internal communication</td>
+              <td class="task-cell">Internal communication execution &amp; logistics support; thiết kế assets, gửi newsletter, follow timeline, hỗ trợ logistics và tổng hợp kết quả event.</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="group-cell">Design</td>
+              <td class="task-cell">Design execution &amp; asset management; thiết kế recruitment/social/event assets, quản lý template, hình ảnh, video stock và source visual.</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="group-cell">Reporting</td>
+              <td class="task-cell">Report execution &amp; data operation; collect data, clean data, pivot, update report theo template cho ads, sourcing, social, budget.</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l1">L1–L2</span></td>
+              <td class="group-cell">Budget / payment</td>
+              <td class="task-cell">Payment operation &amp; actual tracking; phân tách chi phí ads, follow PO, nộp hồ sơ kế toán, cập nhật budget tracker.</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l1">L1–L2</span></td>
+              <td class="group-cell">Admin operation</td>
+              <td class="task-cell">Operation coordination &amp; admin execution; merchandise tracking, book phòng, chia PIC, follow task take-turns, xử lý admin routine.</td>
+            </tr></tbody>
+            </table>
+          </div>
+        </details>
+  </div>
+</section>
+
+<section id="exteam" class="panel">
+  <div class="section-head section-head--kraft">
+    <span class="section-eyebrow">EX Team</span>
+    <h2>Expat Recruitment — phân tầng công việc</h2>
+    <p class="lede">6 người phụ trách · 8 nhóm công việc · 120 đầu việc theo nhóm</p>
+  </div>
+
+  <h3 class="block-title">Quy ước cấp độ công việc</h3>
+  <div class="legend-row">
+        <div class="legend-card">
+          <div class="legend-lv lvl lvl--l4">L4</div>
+          <div class="legend-body">
+            <div class="legend-name">Lead / Strategic</div>
+            <div class="legend-desc">Định hướng, phê duyệt, ra quyết định, quản lý rủi ro, ngân sách, chính sách hoặc performance tổng thể.</div>
+          </div>
+        </div>
+        <div class="legend-card">
+          <div class="legend-lv lvl lvl--l3">L3</div>
+          <div class="legend-body">
+            <div class="legend-name">Senior Direction / Senior Execution</div>
+            <div class="legend-desc">Cần hiểu context sâu, xử lý case phức tạp, lập kế hoạch, phỏng vấn, offer, tư vấn hoặc điều phối nhiều bên.</div>
+          </div>
+        </div>
+        <div class="legend-card">
+          <div class="legend-lv lvl lvl--l2">L2</div>
+          <div class="legend-body">
+            <div class="legend-name">Skilled Operation</div>
+            <div class="legend-desc">Vận hành theo quy trình/template nhưng cần hiểu nghiệp vụ, dữ liệu hoặc candidate journey.</div>
+          </div>
+        </div>
+        <div class="legend-card">
+          <div class="legend-lv lvl lvl--l1">L1</div>
+          <div class="legend-body">
+            <div class="legend-name">Routine / Admin</div>
+            <div class="legend-desc">Task lặp lại, có checklist rõ, ít cần phán đoán phức tạp.</div>
+          </div>
+        </div></div>
+
+  <h3 class="block-title">Tóm tắt theo người</h3>
+  <div class="person-grid">
+        <div class="person-card">
+          <div class="person-card__top">
+            <span class="person-name">C. Lương</span>
+            <span class="lvl lvl--l4">L4</span>
+          </div>
+          <div class="person-role">Manager / Approval / Escalation</div>
+          <div class="person-area"><span class="lbl">Mảng việc chính</span>Planning, governance, approval, stakeholder</div>
+          <div class="person-summary">Master plan, KPI, chính sách GVNN; duyệt tuyển dụng &amp; budget; báo cáo cấp HRT Director/CEO; xử lý escalation, case đặc biệt/kỷ luật và các quyết định cần quyền phê duyệt.</div>
+          <div class="person-tier"><span class="lbl">Tầng trách nhiệm</span>Lead / phê duyệt / xử lý escalation</div>
+        </div>
+        <div class="person-card">
+          <div class="person-card__top">
+            <span class="person-name">Như</span>
+            <span class="lvl lvl--l3">L3–L4</span>
+          </div>
+          <div class="person-role">Senior HR EX</div>
+          <div class="person-area"><span class="lbl">Mảng việc chính</span>Full-cycle, performance, reports, scheme/budget, special cases</div>
+          <div class="person-summary">Full-cycle tuyển dụng; agency &amp; Filipino sourcing; báo cáo theo yêu cầu và theo dõi chỉ số tuyển dụng; xây/theo dõi scheme; lập &amp; quản lý ngân sách; petty cash; tư vấn case đặc biệt cho Vân/Khánh; quản lý lớp tiếng Việt.</div>
+          <div class="person-tier"><span class="lbl">Tầng trách nhiệm</span>Senior owner / performance &amp; budget</div>
+        </div>
+        <div class="person-card">
+          <div class="person-card__top">
+            <span class="person-name">John</span>
+            <span class="lvl lvl--l2">L2–L3</span>
+          </div>
+          <div class="person-role">Senior Coordination / Candidate Communication</div>
+          <div class="person-area"><span class="lbl">Mảng việc chính</span>Candidate communication, interview/onboarding, agency/event support</div>
+          <div class="person-summary">Content social, fanpage, follow-up ứng viên; setup/phỏng vấn; entry briefing, OL signing, assignment/hợp đồng; agency/event logistics; teacher inquiries; cập nhật handbook/templates.</div>
+          <div class="person-tier"><span class="lbl">Tầng trách nhiệm</span>Senior coordination / support</div>
+        </div>
+        <div class="person-card">
+          <div class="person-card__top">
+            <span class="person-name">Dương</span>
+            <span class="lvl lvl--l2">L2–L3</span>
+          </div>
+          <div class="person-role">Senior HR EX</div>
+          <div class="person-area"><span class="lbl">Mảng việc chính</span>Sourcing/RMKT operation, full-cycle recruitment, reports</div>
+          <div class="person-summary">Job sites, social, Meta/Google ads, newsletter/referral, microsite; full-cycle tuyển dụng; EX order tracker, quarterly report, bonus/payment reports; ERP, procedure update, competitor analysis, staff training.</div>
+          <div class="person-tier"><span class="lbl">Tầng trách nhiệm</span>Owner / skilled execution</div>
+        </div>
+        <div class="person-card">
+          <div class="person-card__top">
+            <span class="person-name">Khánh</span>
+            <span class="lvl lvl--l2">L2–L3</span>
+          </div>
+          <div class="person-role">HR EX</div>
+          <div class="person-area"><span class="lbl">Mảng việc chính</span>Full-cycle recruitment, reports, agency support, admin</div>
+          <div class="person-summary">Screening, interview setup, nhập kết quả, offer/deal, entry briefing, arrival logistics, OL/contract, assignment; weekly/monthly/quarterly reports; agency/logistics; admin &amp; candidate/teacher support.</div>
+          <div class="person-tier"><span class="lbl">Tầng trách nhiệm</span>Doer / operation</div>
+        </div>
+        <div class="person-card">
+          <div class="person-card__top">
+            <span class="person-name">Vân</span>
+            <span class="lvl lvl--l2">L2</span>
+          </div>
+          <div class="person-role">HR EX</div>
+          <div class="person-area"><span class="lbl">Mảng việc chính</span>Full-cycle recruitment, sourcing support, reports, admin, Buddy Program</div>
+          <div class="person-summary">Screening, interview setup, offer/deal, onboarding/arrival logistics; job sites/social/newsletter/referral support; reports &amp; filing; teacher transfer/FT in-out/resignation; Buddy Program &amp; payment support.</div>
+          <div class="person-tier"><span class="lbl">Tầng trách nhiệm</span>Doer / routine operation</div>
+        </div></div>
+
+  <h3 class="block-title">Ma trận theo 8 nhóm công việc <span class="block-title__hint">C. Lương · John · Như · Dương · Khánh · Vân</span></h3>
+  <p class="muted-note">Bấm vào từng nhóm để xem chi tiết đầu việc và vai trò (Lead / Owner / Doer / Input / Support) của từng người.</p>
+  <div class="acc-list">
+    
+        <details class="group-acc" open>
+          <summary>
+            <span class="group-name">1. Sourcing &amp; Recruitment Marketing</span>
+            <span class="group-count">42 đầu việc</span>
+          </summary>
+          <div class="table-wrap">
+            <table class="matrix-table">
+              <thead><tr><th>Cấp độ</th><th>Mảng / đầu việc</th><th>Đầu việc cụ thể</th><th>C. Lương</th><th>John</th><th>Như</th><th>Dương</th><th>Khánh</th><th>Vân</th></tr></thead>
+              <tbody>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              <td class="area-cell">Công tác marketing qua email (newsletter, chương trình Referral có trả phí)</td>
+              <td class="task-cell">Duyệt nội dung email/ newsletter và kế hoạch gửi thư</td>
+              <td><span class="badge badge--lead">LEAD</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              <td class="area-cell">Cập nhật trang Microsite tuyển dụng</td>
+              <td class="task-cell">Duyệt nội dung và timeline cập nhật</td>
+              <td><span class="badge badge--lead">LEAD</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              <td class="area-cell">Lập kế hoạch chạy quảng cáo trên nền tảng Google</td>
+              <td class="task-cell">Duyệt kế hoạch, nội dung và chi phí quảng cáo</td>
+              <td><span class="badge badge--lead">LEAD</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              <td class="area-cell">Lập kế hoạch và chạy quảng cáo trên nền tảng Meta (FB, Insta)</td>
+              <td class="task-cell">Duyệt nội dung, kế hoạch đăng bài và chi phí bài đăng</td>
+              <td><span class="badge badge--lead">LEAD</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              <td class="area-cell">Lập kế hoạch và đăng bài tuyển dụng trên các job sites</td>
+              <td class="task-cell">Duyệt nội dung bài đăng</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              <td class="area-cell">Lập kế hoạch và đăng bài tuyển dụng trên các job sites</td>
+              <td class="task-cell">Duyệt đề xuất gói bài đăng cần mua và ký HĐ</td>
+              <td><span class="badge badge--lead">LEAD</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              <td class="area-cell">Lập kế hoạch và đăng bài tuyển dụng trên các trang MXH</td>
+              <td class="task-cell">Duyệt kế hoạch đăng bài và nội dung bài đăng</td>
+              <td><span class="badge badge--lead">LEAD</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              <td class="area-cell">Quản lý và mở rộng hợp tác với các agency tuyển dụng</td>
+              <td class="task-cell">Duyệt đề xuất tái tục HĐ, mở rộng network, điều chỉnh T&amp;C</td>
+              <td><span class="badge badge--lead">LEAD</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              <td class="area-cell">Quản lý và mở rộng hợp tác với các agency tuyển dụng</td>
+              <td class="task-cell">Làm đầu mối liên hệ với agency trong việc tái ký hđ giới thiệu uv, đăng ký tham dự/chủ động đề xuất tổ chức sự kiện Job orientation (nếu có)</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge badge--lead">LEAD</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              <td class="area-cell">Trao đổi với ứng viên qua Facebook fanpage</td>
+              <td class="task-cell">Duyệt nội dung các câu trả lời mẫu</td>
+              <td><span class="badge badge--lead">LEAD</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="area-cell">Lập kế hoạch chạy quảng cáo trên nền tảng Google</td>
+              <td class="task-cell">Lên kế hoạch chạy google ads, Phối hợp với sub team EB lên plan và theo dõi timeline sử dụng</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="area-cell">Lập kế hoạch và đăng bài tuyển dụng trên các job sites</td>
+              <td class="task-cell">Đề xuất job sites và gói đăng bài cần mua</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="area-cell">Quản lý và mở rộng hợp tác với các agency tuyển dụng</td>
+              <td class="task-cell">Liên hệ followup với ứng viên quan tâm (nếu có)</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="area-cell">Quản lý và mở rộng hợp tác với các agency tuyển dụng</td>
+              <td class="task-cell">Lên kế hoạch Job orientation với Agencies</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="area-cell">Quản lý và mở rộng hợp tác với các agency tuyển dụng</td>
+              <td class="task-cell">Rà soát HĐ, lên kế hoạch tái ký, điều chỉnh T&amp;C</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="area-cell">Quản lý và mở rộng hợp tác với các agency tuyển dụng</td>
+              <td class="task-cell">Tham gia sự kiện và đánh giá sự kiện</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="area-cell">Quản lý và mở rộng hợp tác với các agency tuyển dụng</td>
+              <td class="task-cell">Theo dõi chi phí và mức độ hiệu quả của các agencies</td>
+              <td><span class="badge badge--owner">OWNER</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="area-cell">Quản lý và mở rộng hợp tác với các agency tuyển dụng</td>
+              <td class="task-cell">Thực hiện công tác logistics (book xe, công tác chuẩn bị &amp; soạn slide, order quà tặng, etc.)</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="area-cell">Sourcing đặc thù</td>
+              <td class="task-cell">Sourcing mảng agency và Filipino candidates; theo dõi nguồn, chất lượng CV và hiệu quả chuyển đổi</td>
+              <td><span class="badge badge--input">INPUT</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="area-cell">Công tác marketing qua email (newsletter, chương trình Referral có trả phí)</td>
+              <td class="task-cell">Lên plan gửi email/ newsletter theo tháng và theo dõi timeline gửi email</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="area-cell">Công tác marketing qua email (newsletter, chương trình Referral có trả phí)</td>
+              <td class="task-cell">Soạn/sửa newsletter phù hợp khu vực cần tuyển</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="area-cell">Công tác marketing qua email (newsletter, chương trình Referral có trả phí)</td>
+              <td class="task-cell">Theo dõi mức độ hiệu quả của việc gửi email/chạy Referral</td>
+              <td><span class="badge badge--input">INPUT</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="area-cell">Cập nhật trang Microsite tuyển dụng</td>
+              <td class="task-cell">Phối hợp với sub team EB theo dõi timeline và tiến độ chỉnh sửa/ cập nhật nội dung trang EX landing page</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="area-cell">Cập nhật trang Microsite tuyển dụng</td>
+              <td class="task-cell">Review nội dung và làm proposal cập nhật nội dung cho trang EX landing page</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="area-cell">Lập kế hoạch chạy quảng cáo trên nền tảng Google</td>
+              <td class="task-cell">Làm thanh toán chi phí chạy ads cho bài đăng</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--doer">DOER</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="area-cell">Lập kế hoạch chạy quảng cáo trên nền tảng Google</td>
+              <td class="task-cell">Theo dõi mức độ hiệu quả của việc quảng cáo</td>
+              <td><span class="badge badge--input">INPUT</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="area-cell">Lập kế hoạch và chạy quảng cáo trên nền tảng Meta (FB, Insta)</td>
+              <td class="task-cell">Làm thanh toán chi phí chạy ads cho bài đăng</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--doer">DOER</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="area-cell">Lập kế hoạch và chạy quảng cáo trên nền tảng Meta (FB, Insta)</td>
+              <td class="task-cell">Theo dõi chi phí và mức độ hiệu quả của các bài đăng</td>
+              <td><span class="badge badge--input">INPUT</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="area-cell">Lập kế hoạch và chạy quảng cáo trên nền tảng Meta (FB, Insta)</td>
+              <td class="task-cell">Viết content bài đăng</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="area-cell">Trao đổi với ứng viên qua Facebook fanpage</td>
+              <td class="task-cell">Theo dõi mức độ hiệu quả của việc trao đổi với ứng viên</td>
+              <td><span class="badge badge--doer">DOER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="area-cell">Trao đổi với ứng viên qua Facebook fanpage</td>
+              <td class="task-cell">Trà lời tin nhắn của ứng viên trên VUS fanpage</td>
+              <td><span class="badge badge--input">INPUT</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l1">L1</span></td>
+              <td class="area-cell">Lập kế hoạch và chạy quảng cáo trên nền tảng Meta (FB, Insta)</td>
+              <td class="task-cell">Lên plan đăng bài theo tháng và theo dõi timeline đăng tuyển</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l1">L1</span></td>
+              <td class="area-cell">Lập kế hoạch và đăng bài tuyển dụng trên các job sites</td>
+              <td class="task-cell">Cập nhật thông tin các gói và bảng giá, so sánh hiệu quả và mức độ phù hợp của các job sites</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--support">SUPPORT</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l1">L1</span></td>
+              <td class="area-cell">Lập kế hoạch và đăng bài tuyển dụng trên các job sites</td>
+              <td class="task-cell">Làm thanh toán và mở tài khoản đăng bài</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--doer">DOER</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l1">L1</span></td>
+              <td class="area-cell">Lập kế hoạch và đăng bài tuyển dụng trên các job sites</td>
+              <td class="task-cell">Lên plan đăng bài theo tháng, theo dõi timeline đăng tuyển</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--support">SUPPORT</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l1">L1</span></td>
+              <td class="area-cell">Lập kế hoạch và đăng bài tuyển dụng trên các job sites</td>
+              <td class="task-cell">Theo dõi chi phí và mức độ hiệu quả của các job sites đăng tuyển</td>
+              <td><span class="badge badge--input">INPUT</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--support">SUPPORT</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l1">L1</span></td>
+              <td class="area-cell">Lập kế hoạch và đăng bài tuyển dụng trên các job sites</td>
+              <td class="task-cell">Đăng bài</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--support">SUPPORT</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l1">L1</span></td>
+              <td class="area-cell">Lập kế hoạch và đăng bài tuyển dụng trên các trang MXH</td>
+              <td class="task-cell">Lên plan theo tháng và theo dõi timeline đăng bài</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l1">L1</span></td>
+              <td class="area-cell">Lập kế hoạch và đăng bài tuyển dụng trên các trang MXH</td>
+              <td class="task-cell">Lọc lại các nhóm và tìm kiếm thêm các nhóm mới tiềm năng trên các kênh social media</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--support">SUPPORT</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l1">L1</span></td>
+              <td class="area-cell">Lập kế hoạch và đăng bài tuyển dụng trên các trang MXH</td>
+              <td class="task-cell">Seeding</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l1">L1</span></td>
+              <td class="area-cell">Lập kế hoạch và đăng bài tuyển dụng trên các trang MXH</td>
+              <td class="task-cell">Theo dõi chi phí (nếu có) và mức độ hiệu quả của các bài đăng</td>
+              <td><span class="badge badge--input">INPUT</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l1">L1</span></td>
+              <td class="area-cell">Lập kế hoạch và đăng bài tuyển dụng trên các trang MXH</td>
+              <td class="task-cell">Viết content bài đăng/Write post content</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td>
+            </tr></tbody>
+            </table>
+          </div>
+        </details>
+        <details class="group-acc" >
+          <summary>
+            <span class="group-name">2. Full-cycle tuyển dụng</span>
+            <span class="group-count">18 đầu việc</span>
+          </summary>
+          <div class="table-wrap">
+            <table class="matrix-table">
+              <thead><tr><th>Cấp độ</th><th>Mảng / đầu việc</th><th>Đầu việc cụ thể</th><th>C. Lương</th><th>John</th><th>Như</th><th>Dương</th><th>Khánh</th><th>Vân</th></tr></thead>
+              <tbody>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              <td class="area-cell">Chuẩn bị các loại hợp đồng khác</td>
+              <td class="task-cell">Review và ký OL, FTA</td>
+              <td><span class="badge badge--lead">LEAD</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              <td class="area-cell">Thông báo kết quả phỏng vấn &amp; đàm phán offer</td>
+              <td class="task-cell">Offer, deal lương, các loại chế độ/bonus nếu có (theo scheme)</td>
+              <td><span class="badge badge--lead">LEAD</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="area-cell">Full Cycle tuyển dụng</td>
+              <td class="task-cell">Screening, phỏng vấn, offer/deal lương, entry briefing, onboarding, assignment, hợp đồng và probation follow-up</td>
+              <td><span class="badge badge--input">INPUT</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--doer">DOER</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="area-cell">Phổ biến thủ tục tiền nhận việc cho giáo viên mới (Entry briefing &amp; follow up with WP team about AL)</td>
+              <td class="task-cell">Overseas: phối hợp với team WP để brief gv về các thủ tục trước khi qua VN, follow up cho tới khi GV có được Approval letter để nhập cảnh VN / Local: phối hợp với team WP để brief gv về thủ tục border run</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--input">INPUT</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge badge--support">SUPPORT</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="area-cell">Tiếp nhận yêu cầu tuyển dụng từ cơ sở</td>
+              <td class="task-cell">Nhận đơn tuyển dụng từ cơ sở (kèm lý do tuyển dụng) và lên kế hoạch tuyển dụng</td>
+              <td><span class="badge badge--input">INPUT</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--input">INPUT</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge badge--support">SUPPORT</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="area-cell">Tổ chức chương trình &quot;Bạn đồng hành - Buddy Program&quot; cho giáo viên mới</td>
+              <td class="task-cell">Liên hệ GVVN hoặc nhân viên cơ sở để offer làm buddy, mô tả yêu cầu</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--owner">OWNER</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="area-cell">Tổ chức phỏng vấn, tiến hành phỏng vấn ứng viên và cập nhật kết quả phỏng vấn</td>
+              <td class="task-cell">Nhập liệu kết quả phỏng vấn vào tracker và PM</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--support">SUPPORT</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="area-cell">Tổ chức phỏng vấn, tiến hành phỏng vấn ứng viên và cập nhật kết quả phỏng vấn</td>
+              <td class="task-cell">Tiến hành các bước liên hệ, set up phỏng vấn</td>
+              <td><span class="badge badge--input">INPUT</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--input">INPUT</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="area-cell">Tổ chức phỏng vấn, tiến hành phỏng vấn ứng viên và cập nhật kết quả phỏng vấn</td>
+              <td class="task-cell">phỏng vấn ứng viên</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="area-cell">Chuẩn bị các loại hợp đồng khác</td>
+              <td class="task-cell">In HĐFT và trình ký</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="area-cell">Theo dõi kết quả thử việc của GV</td>
+              <td class="task-cell">Nhận kết quả thử việc của GV do cơ sở gửi lên</td>
+              <td><span class="badge badge--input">INPUT</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="area-cell">Thực hiện công tác tiếp nhận và ký kết hợp đồng với GV mới</td>
+              <td class="task-cell">Cho GV ký OL, điền các form biểu, assign về cơ sở</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--support">SUPPORT</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="area-cell">Tổ chức chương trình &quot;Bạn đồng hành - Buddy Program&quot; cho giáo viên mới</td>
+              <td class="task-cell">Làm hồ sơ thanh toán chi phí buddy, nghiệm thu (bằng hình ảnh)</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="area-cell">Tổ chức chương trình &quot;Bạn đồng hành - Buddy Program&quot; cho giáo viên mới</td>
+              <td class="task-cell">Lên chương trình cho buddy tour</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--doer">DOER</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="area-cell">Tổ chức chương trình &quot;Bạn đồng hành - Buddy Program&quot; cho giáo viên mới</td>
+              <td class="task-cell">Sử dụng hình ảnh vào mục đích quảng cáo tuyển dụng</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l1">L1</span></td>
+              <td class="area-cell">Thực hiện bàn giao giáo viên mới cho cơ sở</td>
+              <td class="task-cell">Tiến hành thủ tục gửi GV mới về cơ sở và nhập liệu tương ứng</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l1">L1</span></td>
+              <td class="area-cell">Thực hiện công tác tiếp nhận và ký kết hợp đồng với GV mới</td>
+              <td class="task-cell">Đặt xe đón sân bay, book khách sạn, làm PO thanh toán</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--support">SUPPORT</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l1">L1</span></td>
+              <td class="area-cell">Tiếp nhận và sàng lọc hồ sơ ứng viên</td>
+              <td class="task-cell">Tiến hành lọc hồ sơ uv theo tiêu chí tuyển dụng, nhập liệu vào PM và Candidate Report Tracker</td>
+              <td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--lead">LEAD</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td>
+            </tr></tbody>
+            </table>
+          </div>
+        </details>
+        <details class="group-acc" >
+          <summary>
+            <span class="group-name">3. Hồ sơ &amp; Báo cáo</span>
+            <span class="group-count">14 đầu việc</span>
+          </summary>
+          <div class="table-wrap">
+            <table class="matrix-table">
+              <thead><tr><th>Cấp độ</th><th>Mảng / đầu việc</th><th>Đầu việc cụ thể</th><th>C. Lương</th><th>John</th><th>Như</th><th>Dương</th><th>Khánh</th><th>Vân</th></tr></thead>
+              <tbody>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              <td class="area-cell">Báo cáo theo dõi chỉ số tuyển dụng</td>
+              <td class="task-cell">Theo dõi chỉ số tuyển dụng, báo cáo theo yêu cầu, sourcing/management report và phân tích hiệu quả kênh</td>
+              <td><span class="badge badge--input">INPUT</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--lead">LEAD</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              <td class="area-cell">Thực hiện báo cáo tháng đến CEO</td>
+              <td class="task-cell">Kiểm tra dữ liệu báo cáo gửi CEO (tuần đầu tiên của tháng kế tiếp)</td>
+              <td><span class="badge badge--lead">LEAD</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge badge--support">SUPPORT</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              <td class="area-cell">Thực hiện báo cáo tháng đến Director</td>
+              <td class="task-cell">Làm báo cáo và trình bày kết quả công việc hàng tháng cho HRT Director</td>
+              <td><span class="badge badge--lead">LEAD</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="area-cell">Thực hiện báo cáo quý</td>
+              <td class="task-cell">Làm báo cáo quý về tình hình GV và tuyển dụng (tuần đầu tiên của quý kế tiếp)</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="area-cell">Báo cáo bảng giờ GVNN hàng tháng</td>
+              <td class="task-cell">Làm báo cáo tổng giờ GV theo tháng để theo dõi trong nội bộ team để đảm bảo việc sử dụng GV hiệu quả</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge badge--support">SUPPORT</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="area-cell">Báo cáo số lượng quà tặng</td>
+              <td class="task-cell">Làm báo cáo SL quà tặng cho GV: Quà Tết, Trung Thu, 20/11, mùa mưa, mở cơ sở mới</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="area-cell">Báo cáo tăng giảm GVNN</td>
+              <td class="task-cell">Làm báo cáo biến động GV trong tháng (ngày 23 của tháng)</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="area-cell">Làm đề nghị thanh toán bonus tuyển dụng GVNN theo tháng</td>
+              <td class="task-cell">Tổng hợp, làm đề nghị thanh toán chi trả các loại bonus (sign on, relocation, border run...) cho gv</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="area-cell">Thu nhận và bàn giao hồ sơ của giáo viên mới cho C&amp;B</td>
+              <td class="task-cell">Theo dõi và thu nhận hồ sơ còn thiếu của GV</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge badge--lead">LEAD</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="area-cell">Thu nhận và bàn giao hồ sơ của giáo viên mới cho C&amp;B</td>
+              <td class="task-cell">Thu thập bộ hồ sơ lưu đầy đủ của GV và bàn giao 1 staff của team</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--lead">LEAD</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="area-cell">Thu nhận và bàn giao hồ sơ của giáo viên mới cho C&amp;B</td>
+              <td class="task-cell">Đại diện bàn giao hồ sơ cho team C&amp;B</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--support">SUPPORT</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="area-cell">Thực hiện các báo cáo khác theo yêu cầu của quản lý</td>
+              <td class="task-cell">Thực hiện các báo cáo khác liên quan đến GVNN cho line manager và cấp trên</td>
+              <td><span class="badge badge--owner">OWNER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--lead">LEAD</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l1">L1</span></td>
+              <td class="area-cell">Cập nhật số liệu yêu cầu tuyển dụng từ cơ sở</td>
+              <td class="task-cell">Nhập liệu và theo dõi tình hình cung ứng GV về cho từng cơ sở theo order</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l1">L1</span></td>
+              <td class="area-cell">Thực hiện báo cáo tuần</td>
+              <td class="task-cell">Làm báo cáo tuần (nhập liệu và theo dõi SL GVVN, SL in out FT, SL GV thuyên chuyển, SL GV mới và nghỉ việc)</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--support">SUPPORT</span></td>
+            </tr></tbody>
+            </table>
+          </div>
+        </details>
+        <details class="group-acc" >
+          <summary>
+            <span class="group-name">4. Vận hành GVNN &amp; Admin</span>
+            <span class="group-count">23 đầu việc</span>
+          </summary>
+          <div class="table-wrap">
+            <table class="matrix-table">
+              <thead><tr><th>Cấp độ</th><th>Mảng / đầu việc</th><th>Đầu việc cụ thể</th><th>C. Lương</th><th>John</th><th>Như</th><th>Dương</th><th>Khánh</th><th>Vân</th></tr></thead>
+              <tbody>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              <td class="area-cell">Xử lý và xác nhận yêu cầu in/out FT</td>
+              <td class="task-cell">Xét duyệt in out FT</td>
+              <td><span class="badge badge--lead">LEAD</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              <td class="area-cell">Xử lý và xác nhận yêu cầu nghỉ việc của GV</td>
+              <td class="task-cell">Xét duyệt cho GV nghỉ việc</td>
+              <td><span class="badge badge--lead">LEAD</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              <td class="area-cell">Xử lý và xác nhận yêu cầu xin chuyển cơ sở của GV</td>
+              <td class="task-cell">Xét duyệt việc chuyển cơ sở</td>
+              <td><span class="badge badge--lead">LEAD</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2-3</span></td>
+              <td class="area-cell">Lớp tiếng Việt</td>
+              <td class="task-cell">Quản lý lớp tiếng Việt: memo, ghi danh, điểm danh, xử lý câu hỏi, theo dõi lớp và thanh toán GV</td>
+              <td><span class="badge badge--input">INPUT</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="area-cell">Thực hiện quy trình xử lý kỷ luật GV</td>
+              <td class="task-cell">Chuẩn bị các form mẫu, hẹn GV và các bên liên quan tham dự họp XLKL</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="area-cell">Thực hiện quy trình xử lý kỷ luật GV</td>
+              <td class="task-cell">Chủ trì buổi họp XLKL và ký nháy quyết định XLKL</td>
+              <td><span class="badge badge--input">INPUT</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="area-cell">Thực hiện quy trình xử lý kỷ luật GV</td>
+              <td class="task-cell">Feedback và hướng dẫn cơ sở các bước xử lý tiếp theo</td>
+              <td><span class="badge badge--owner">OWNER</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="area-cell">Thực hiện quy trình xử lý kỷ luật GV</td>
+              <td class="task-cell">Gửi các form về cho GV và lưu file</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="area-cell">Thực hiện quy trình xử lý kỷ luật GV</td>
+              <td class="task-cell">Nhận request XLKL, phân tích bảng tường trình từ TQM cơ sở</td>
+              <td><span class="badge badge--owner">OWNER</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="area-cell">Thực hiện quy trình xử lý kỷ luật GV</td>
+              <td class="task-cell">Xác định loại vi phạm và hướng XLKL</td>
+              <td><span class="badge badge--owner">OWNER</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="area-cell">Tư vấn case đặc biệt</td>
+              <td class="task-cell">Tư vấn cho Vân/Khánh các case đặc biệt trong tuyển dụng, offer, onboarding, hồ sơ hoặc quản lý GVNN</td>
+              <td><span class="badge badge--input">INPUT</span></td><td><span class="badge badge--input">INPUT</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="area-cell">Cập nhật sổ tay GVNN</td>
+              <td class="task-cell">Cập nhật các thông tin thay đổi vào trong Teachers&#x27; handbook</td>
+              <td><span class="badge badge--input">INPUT</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="area-cell">Quản lý và sắp xếp các thư mục trong ổ share của team EX</td>
+              <td class="task-cell">Cập nhật nội dung và sắp xếp lại các folder của team</td>
+              <td><span class="badge badge--owner">OWNER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="area-cell">Theo dõi và cập nhật các mẫu email</td>
+              <td class="task-cell">cập nhật và thêm mới nội dung templates cho email</td>
+              <td><span class="badge badge--input">INPUT</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="area-cell">Theo dõi và trả lời thắc mắc của GV và TQM</td>
+              <td class="task-cell">Handle expat teacher inquiries/Advise TQMs on expat-related issues</td>
+              <td><span class="badge badge--input">INPUT</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="area-cell">Tuyển dụng &amp; Quản lý thực tập sinh</td>
+              <td class="task-cell">Sàng lọc và phỏng vấn interns</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="area-cell">Tuyển dụng &amp; Quản lý thực tập sinh</td>
+              <td class="task-cell">Train &amp; quản lý intern, chấm công</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="area-cell">Tổ chức lớp tiếng Việt cho GVNN</td>
+              <td class="task-cell">Làm thanh toán chi trả lương cho GV</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="area-cell">Tổ chức lớp tiếng Việt cho GVNN</td>
+              <td class="task-cell">Lên lịch mở lớp, gửi Memo chiêu sinh, ghi danh, thông báo cho GV</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="area-cell">Xử lý và xác nhận yêu cầu in/out FT</td>
+              <td class="task-cell">Xử lý và xác nhận việc GV in out FT</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--doer">DOER</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="area-cell">Xử lý và xác nhận yêu cầu nghỉ việc của GV</td>
+              <td class="task-cell">Xử lý và xác nhận việc cho GV nghỉ việc</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--doer">DOER</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="area-cell">Xử lý và xác nhận yêu cầu xin chuyển cơ sở của GV</td>
+              <td class="task-cell">Xử lý và xác nhận việc GV chuyển cơ sở</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l1">L1</span></td>
+              <td class="area-cell">Tổ chức lớp tiếng Việt cho GVNN</td>
+              <td class="task-cell">Điểm danh GV (random), trả lời câu hỏi của GV bị lỡ bài học, xin học muộn...</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr></tbody>
+            </table>
+          </div>
+        </details>
+        <details class="group-acc" >
+          <summary>
+            <span class="group-name">5. Budget, Scheme &amp; Petty Cash</span>
+            <span class="group-count">8 đầu việc</span>
+          </summary>
+          <div class="table-wrap">
+            <table class="matrix-table">
+              <thead><tr><th>Cấp độ</th><th>Mảng / đầu việc</th><th>Đầu việc cụ thể</th><th>C. Lương</th><th>John</th><th>Như</th><th>Dương</th><th>Khánh</th><th>Vân</th></tr></thead>
+              <tbody>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              <td class="area-cell">Lên kế hoạch cho ngân sách hằng năm</td>
+              <td class="task-cell">Lập ngân sách hàng năm</td>
+              <td><span class="badge badge--lead">LEAD</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              <td class="area-cell">Petty cash</td>
+              <td class="task-cell">Quản lý petty cash: theo dõi quỹ, đối chiếu chi phí, đảm bảo chứng từ và báo cáo khi cần</td>
+              <td><span class="badge badge--input">INPUT</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              <td class="area-cell">Quản lý quỹ tiền mặt tạm ứng</td>
+              <td class="task-cell">Dự chi việc sử dụng ngân sách trong nửa cuối tháng hiện tại và cả tháng sau</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--lead">LEAD</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              <td class="area-cell">Quản lý quỹ tiền mặt tạm ứng</td>
+              <td class="task-cell">Quản lý dòng tiền, thanh toán cho vendor xe, khách sạn khi GV overseas mới tuyển qua VN / Làm báo cáo dòng tiền, đảm bảo team có đủ tiền thu-chi</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--lead">LEAD</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              <td class="area-cell">Scheme &amp; ngân sách</td>
+              <td class="task-cell">Xây scheme / rà soát bonus hoặc remuneration package; lập kế hoạch ngân sách và quản lý ngân sách</td>
+              <td><span class="badge badge--lead">LEAD</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              <td class="area-cell">Theo dõi và cập nhật việc sử dụng ngân sách</td>
+              <td class="task-cell">Cập nhật thông tin vào file budget management tracker / Rà soát chi phí hàng tháng trong budget tracking</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--lead">LEAD</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge badge--support">SUPPORT</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              <td class="area-cell">Theo dõi và cập nhật việc sử dụng ngân sách</td>
+              <td class="task-cell">Theo dõi việc nhập budget của team, lập kế hoạch ngân sách theo tháng, quý để việc chi tiêu không vượt quá budget</td>
+              <td><span class="badge badge--lead">LEAD</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="area-cell">Scheme tracking &amp; budget tracking</td>
+              <td class="task-cell">Theo dõi scheme, budget tracker, actual spending và dự chi để kiểm soát chi phí team EX</td>
+              <td><span class="badge badge--input">INPUT</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td>
+            </tr></tbody>
+            </table>
+          </div>
+        </details>
+        <details class="group-acc" >
+          <summary>
+            <span class="group-name">6. Dự án, Quy trình &amp; Data System</span>
+            <span class="group-count">6 đầu việc</span>
+          </summary>
+          <div class="table-wrap">
+            <table class="matrix-table">
+              <thead><tr><th>Cấp độ</th><th>Mảng / đầu việc</th><th>Đầu việc cụ thể</th><th>C. Lương</th><th>John</th><th>Như</th><th>Dương</th><th>Khánh</th><th>Vân</th></tr></thead>
+              <tbody>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              <td class="area-cell">Quản lý và phân tích số liệu về Nguồn Tuyển Dụng và số liệu nhân sự</td>
+              <td class="task-cell">Phân tích, theo dõi và tổng hợp hiệu quả của tất cả các kênh tuyển dụng / Phân tích, theo dõi và tổng hợp hiệu quả tuyển dụng, fill order, KPIs lên looker studio</td>
+              <td><span class="badge badge--lead">LEAD</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="area-cell">Cập nhật quy trình tuyển và quản lý GVNN, sổ tay GV</td>
+              <td class="task-cell">Cập nhật và thêm mới nội dung qui trình tuyển dụng và quản lý GV</td>
+              <td><span class="badge badge--input">INPUT</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="area-cell">Dự án ERP</td>
+              <td class="task-cell">Hoàn thiện giai đoạn làm báo cáo cho phần mềm (Phase 2)</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="area-cell">Dự án ERP</td>
+              <td class="task-cell">Phối hợp với team C&amp;B theo dõi các tính năng và tính ổn định của phần mềm mới. Trao đổi các thông tin lỗi, yêu cầu mới với C&amp;B (phase 1)</td>
+              <td><span class="badge badge--input">INPUT</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="area-cell">Dự án báo cáo trên Power BI</td>
+              <td class="task-cell">Tham gia họp với project owner</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--lead">LEAD</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="area-cell">Tổng hợp dữ liệu và phân tích thông tin đối thủ</td>
+              <td class="task-cell">Cập nhật thông tin tuyển dụng GV từ các công ty đối thủ</td>
+              <td><span class="badge badge--owner">OWNER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--input">INPUT</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td>
+            </tr></tbody>
+            </table>
+          </div>
+        </details>
+        <details class="group-acc" >
+          <summary>
+            <span class="group-name">7. Training, IDP &amp; Staff Development</span>
+            <span class="group-count">5 đầu việc</span>
+          </summary>
+          <div class="table-wrap">
+            <table class="matrix-table">
+              <thead><tr><th>Cấp độ</th><th>Mảng / đầu việc</th><th>Đầu việc cụ thể</th><th>C. Lương</th><th>John</th><th>Như</th><th>Dương</th><th>Khánh</th><th>Vân</th></tr></thead>
+              <tbody>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              <td class="area-cell">Thiết lập KPI hàng tháng cho nhân viên</td>
+              <td class="task-cell">Thiết lập KPI hàng tháng cho nhân viên</td>
+              <td><span class="badge badge--lead">LEAD</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="area-cell">Đào tạo nhân viên mới</td>
+              <td class="task-cell">Hướng dẫn và đào tạo nhân viên (on-going)</td>
+              <td><span class="badge badge--input">INPUT</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="area-cell">Tham dự sharing và đào tạo nội bộ của phòng ban &amp; cty (Team sharing, E-learning, Town hall meeting)</td>
+              <td class="task-cell">Tham dự Town hall meeting</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="area-cell">Tham dự sharing và đào tạo nội bộ của phòng ban &amp; cty (Team sharing, E-learning, Town hall meeting)</td>
+              <td class="task-cell">Tham dự những khóa học soft skills &amp; nâng cao nghiệp vụ bên ngoài hoặc do VUS tổ chức</td>
+              <td><span class="badge badge--input">INPUT</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="area-cell">Tham dự sharing và đào tạo nội bộ của phòng ban &amp; cty (Team sharing, E-learning, Town hall meeting)</td>
+              <td class="task-cell">Thực hiện chia sẻ những kiến thức mới/ củng cố nghiệp vụ chuyên môn trong nội bộ team</td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr></tbody>
+            </table>
+          </div>
+        </details>
+        <details class="group-acc" >
+          <summary>
+            <span class="group-name">8. Công việc quản lý &amp; chính sách</span>
+            <span class="group-count">4 đầu việc</span>
+          </summary>
+          <div class="table-wrap">
+            <table class="matrix-table">
+              <thead><tr><th>Cấp độ</th><th>Mảng / đầu việc</th><th>Đầu việc cụ thể</th><th>C. Lương</th><th>John</th><th>Như</th><th>Dương</th><th>Khánh</th><th>Vân</th></tr></thead>
+              <tbody>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              <td class="area-cell">Rà soát và xây dựng chính sách cho GV</td>
+              <td class="task-cell">Cùng với Director &amp; HRT Managers để lên KPIs, review các gói Remuneration Package, xây dựng chính sách cho GV, etc,</td>
+              <td><span class="badge badge--lead">LEAD</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              <td class="area-cell">Rà soát và xây dựng chính sách cho GV</td>
+              <td class="task-cell">Lên master plan - kế hoạch làm việc hàng năm cho team EX / (họp để bàn về các chính sách liên quan đến tuyển dụng)</td>
+              <td><span class="badge badge--lead">LEAD</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              <td class="area-cell">Tổ chức sự kiện cho đội ngũ giáo viên</td>
+              <td class="task-cell">Cùng tham gia tổ chức sự kiện như Teachers&#x27; Day, Teachers&#x27; Awayday, etc.</td>
+              <td><span class="badge badge--lead">LEAD</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              <td class="area-cell">Tổ chức sự kiện cho đội ngũ giáo viên</td>
+              <td class="task-cell">Rà soát và duyệt các báo cáo</td>
+              <td><span class="badge badge--lead">LEAD</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+            </tr></tbody>
+            </table>
+          </div>
+        </details>
+  </div>
+
+  <h3 class="block-title">Chi tiết theo từng người</h3>
+  <div class="acc-list">
+    
+        <details class="person-acc">
+          <summary>
+            <span class="group-name">C. Lương</span>
+            <span class="group-sub">Quản lý / phê duyệt / xử lý escalation</span>
+            <span class="group-count">5 đầu việc</span>
+          </summary>
+          <div class="table-wrap">
+            <table class="matrix-table">
+              <thead><tr><th>Cấp độ</th><th>Nhóm công việc</th><th>Đầu việc cụ thể</th></tr></thead>
+              <tbody>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              <td class="group-cell">Planning &amp; Governance</td>
+              <td class="task-cell">Lên master plan, KPI, chính sách GVNN, rà soát scheme/remuneration package và các quyết định cấp quản lý</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              <td class="group-cell">Phê duyệt tuyển dụng &amp; budget</td>
+              <td class="task-cell">Duyệt job sites, ads, newsletter, microsite, báo cáo, transfer, FT in/out, resignation, hợp đồng hoặc case cần quyền phê duyệt</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              <td class="group-cell">Báo cáo &amp; stakeholder</td>
+              <td class="task-cell">Làm/trình bày báo cáo tháng cho HRT Director/CEO, xử lý escalation với TQM/cơ sở/cấp trên</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              <td class="group-cell">Case đặc biệt &amp; kỷ luật</td>
+              <td class="task-cell">Phân tích case XLKL, xác định hướng xử lý, chủ trì họp và duyệt quyết định</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="group-cell">Teacher/TQM inquiries</td>
+              <td class="task-cell">Tư vấn các thắc mắc hoặc case khó liên quan GVNN và vận hành cơ sở</td>
+            </tr></tbody>
+            </table>
+          </div>
+        </details>
+        <details class="person-acc">
+          <summary>
+            <span class="group-name">John</span>
+            <span class="group-sub">Senior coordination / candidate communication / teacher management support</span>
+            <span class="group-count">5 đầu việc</span>
+          </summary>
+          <div class="table-wrap">
+            <table class="matrix-table">
+              <thead><tr><th>Cấp độ</th><th>Nhóm công việc</th><th>Đầu việc cụ thể</th></tr></thead>
+              <tbody>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="group-cell">Candidate communication</td>
+              <td class="task-cell">Viết content social, trả lời fanpage, follow-up ứng viên quan tâm và hỗ trợ candidate experience</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="group-cell">Interview &amp; onboarding</td>
+              <td class="task-cell">Setup/phỏng vấn ứng viên, nhập kết quả, hỗ trợ entry briefing, OL signing, assignment và hợp đồng</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="group-cell">Agency &amp; event support</td>
+              <td class="task-cell">Liên hệ agency, tham gia Job orientation, logistics, đánh giá hiệu quả sự kiện</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="group-cell">Teacher inquiries &amp; admin cases</td>
+              <td class="task-cell">Handle expat teacher inquiries, tư vấn TQM, xử lý resignation/disciplinary cases</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="group-cell">Filing / handbook / templates</td>
+              <td class="task-cell">Cập nhật handbook, email templates, hồ sơ và các tài liệu vận hành GVNN</td>
+            </tr></tbody>
+            </table>
+          </div>
+        </details>
+        <details class="person-acc">
+          <summary>
+            <span class="group-name">Như</span>
+            <span class="group-sub">Senior HR EX / performance, budget, scheme, special cases</span>
+            <span class="group-count">7 đầu việc</span>
+          </summary>
+          <div class="table-wrap">
+            <table class="matrix-table">
+              <thead><tr><th>Cấp độ</th><th>Nhóm công việc</th><th>Đầu việc cụ thể</th></tr></thead>
+              <tbody>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="group-cell">Full-cycle tuyển dụng</td>
+              <td class="task-cell">Screening, setup/phỏng vấn, thông báo kết quả, offer/deal lương, entry briefing, onboarding, assignment, contract/probation follow-up</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="group-cell">Agency &amp; Filipino sourcing</td>
+              <td class="task-cell">Quản lý agency, rà soát hợp đồng, Job orientation, theo dõi performance nguồn và sourcing Filipino candidates</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              <td class="group-cell">Reports &amp; performance</td>
+              <td class="task-cell">Báo cáo theo yêu cầu, báo cáo theo dõi chỉ số tuyển dụng, sourcing/management report, phân tích hiệu quả kênh và fill order</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
+              <td class="group-cell">Scheme &amp; budget</td>
+              <td class="task-cell">Xây scheme, lập kế hoạch ngân sách, theo dõi scheme, quản lý ngân sách, petty cash và expense forecast</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="group-cell">Special case advisory</td>
+              <td class="task-cell">Tư vấn cho Vân/Khánh các case đặc biệt về tuyển dụng, onboarding, hồ sơ, offer hoặc vận hành GVNN</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2-3</span></td>
+              <td class="group-cell">Vietnamese class</td>
+              <td class="task-cell">Quản lý lớp tiếng Việt: memo, ghi danh, điểm danh, xử lý câu hỏi và thanh toán GV</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="group-cell">Projects &amp; procedures</td>
+              <td class="task-cell">Cập nhật quy trình tuyển dụng/quản lý GVNN, tham gia Power BI/sourcing report, competitor analysis và training nhân viên</td>
+            </tr></tbody>
+            </table>
+          </div>
+        </details>
+        <details class="person-acc">
+          <summary>
+            <span class="group-name">Dương</span>
+            <span class="group-sub">Senior HR EX / recruitment execution &amp; digital/sourcing operations</span>
+            <span class="group-count">5 đầu việc</span>
+          </summary>
+          <div class="table-wrap">
+            <table class="matrix-table">
+              <thead><tr><th>Cấp độ</th><th>Nhóm công việc</th><th>Đầu việc cụ thể</th></tr></thead>
+              <tbody>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2-3</span></td>
+              <td class="group-cell">Sourcing &amp; RMKT operation</td>
+              <td class="task-cell">Job sites, social media, Meta/Google ads, newsletter/referral, microsite follow-up và performance tracking</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="group-cell">Full-cycle tuyển dụng</td>
+              <td class="task-cell">Receive/verify orders, screening, phỏng vấn, offer/deal, entry briefing, OL/contract, assignment và probation follow-up</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2-3</span></td>
+              <td class="group-cell">Reports &amp; trackers</td>
+              <td class="task-cell">EX order tracker, quarterly report, bonus payment report, increase/decrease report và các report theo template</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2-3</span></td>
+              <td class="group-cell">Admin &amp; teacher management</td>
+              <td class="task-cell">Teacher transfer, FT in/out, ERP, shared folder, email templates và quy trình quản lý GVNN</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
+              <td class="group-cell">Projects &amp; improvement</td>
+              <td class="task-cell">ERP, procedure update, competitor analysis, staff training và cải thiện workflow tuyển dụng</td>
+            </tr></tbody>
+            </table>
+          </div>
+        </details>
+        <details class="person-acc">
+          <summary>
+            <span class="group-name">Khánh</span>
+            <span class="group-sub">HR EX / full-cycle recruitment &amp; operation</span>
+            <span class="group-count">5 đầu việc</span>
+          </summary>
+          <div class="table-wrap">
+            <table class="matrix-table">
+              <thead><tr><th>Cấp độ</th><th>Nhóm công việc</th><th>Đầu việc cụ thể</th></tr></thead>
+              <tbody>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2-3</span></td>
+              <td class="group-cell">Full-cycle tuyển dụng</td>
+              <td class="task-cell">Screening, set up interview, nhập kết quả, offer/deal, entry briefing, arrival logistics, OL/contract, assignment</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="group-cell">Reports &amp; filing</td>
+              <td class="task-cell">Weekly report, monthly CEO data, quarterly report, monthly hour report, gift report và hồ sơ GVNN</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2-3</span></td>
+              <td class="group-cell">Agency / sourcing support</td>
+              <td class="task-cell">Agency contact, Job orientation logistics, seeding/social sourcing và follow-up ứng viên</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="group-cell">Admin operation</td>
+              <td class="task-cell">Teacher transfer, resignation/FT in-out, budget update, intern management và admin routine</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="group-cell">Candidate &amp; teacher support</td>
+              <td class="task-cell">Follow-up ứng viên, thông tin onboarding và phối hợp với team/cơ sở theo case</td>
+            </tr></tbody>
+            </table>
+          </div>
+        </details>
+        <details class="person-acc">
+          <summary>
+            <span class="group-name">Vân</span>
+            <span class="group-sub">HR EX / full-cycle recruitment &amp; operation</span>
+            <span class="group-count">5 đầu việc</span>
+          </summary>
+          <div class="table-wrap">
+            <table class="matrix-table">
+              <thead><tr><th>Cấp độ</th><th>Nhóm công việc</th><th>Đầu việc cụ thể</th></tr></thead>
+              <tbody>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2-3</span></td>
+              <td class="group-cell">Full-cycle tuyển dụng</td>
+              <td class="task-cell">Screening, set up interview, nhập kết quả, offer/deal, entry briefing, arrival logistics, OL/contract, assignment</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="group-cell">Sourcing &amp; RMKT support</td>
+              <td class="task-cell">Job sites, social post, newsletter/referral, payment support cho job sites/ads và follow-up ứng viên</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="group-cell">Reports &amp; filing</td>
+              <td class="task-cell">Weekly report, monthly CEO data, monthly hour report, report on demand, gift report và hồ sơ GVNN</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="group-cell">Admin operation</td>
+              <td class="task-cell">Teacher transfer, FT in/out, resignation, budget update và admin routine</td>
+            </tr>
+            <tr>
+              <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
+              <td class="group-cell">Buddy program &amp; onboarding</td>
+              <td class="task-cell">Buddy program, payment support, hình ảnh nghiệm thu và hỗ trợ new GV hòa nhập</td>
+            </tr></tbody>
+            </table>
+          </div>
+        </details>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <p>Chuẩn bị trước buổi catch-up · Nguồn dữ liệu: TL_catchup.xlsx (Sheet1, EB, EX)</p>
+</footer>
+
+<script>
+const tabs = document.querySelectorAll('.tab');
+const panels = document.querySelectorAll('.panel');
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    tabs.forEach(t => t.classList.remove('is-active'));
+    panels.forEach(p => p.classList.remove('is-active'));
+    tab.classList.add('is-active');
+    document.getElementById(tab.dataset.target).classList.add('is-active');
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  });
+});
+</script>
+
+</body>
+</html>
