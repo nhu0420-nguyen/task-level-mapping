@@ -6,23 +6,33 @@
 <title>Bản đồ phân công công việc — EB &amp; EX Team</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --paper:#F6F1E2;
-  --card:#FFFDF7;
-  --ink:#222229;
-  --ink-soft:#3C3B42;
-  --muted:#79705f;
-  --rule:#DED1AE;
-  --teal:#2F6F62;
-  --teal-soft:#E4EEE9;
-  --kraft:#B07A33;
-  --kraft-soft:#F3E6D2;
-  --support:#8d8475;
-  --inputc:#56758a;
-  --review:#7c5a72;
-  --radius:10px;
+  /* brand primary */
+  --red:#F6042E;
+  --red-soft:#FDE3E7;
+  --blue:#1A31B7;
+  --blue-soft:#E4E7F8;
+
+  /* brand secondary (sampled from brand board) */
+  --sec-indigo:#4055A4;
+  --sec-electric:#2BB6E8;
+  --sec-purple:#462D93;
+  --sec-orange:#F34E20;
+  --sec-pink:#E84B9A;
+  --sec-yellow:#FECC09;
+  --sec-green:#00B082;
+
+  /* neutrals (blue-tinted ink, no black/gray) */
+  --ink:#16215C;
+  --ink-soft:#2B3570;
+  --muted:#5B66A0;
+  --rule:#DEE2F5;
+  --paper:#F1F2FA;
+  --card:#FFFFFF;
+
+  --radius:14px;
 }
 
 *{box-sizing:border-box;}
@@ -35,104 +45,110 @@ body{
   font-size:15.5px;
   line-height:1.55;
 }
-h1,h2,h3{font-family:'Fraunces',serif; color:var(--ink); margin:0;}
+h1,h2,h3{font-family:'Baloo 2',sans-serif; color:var(--ink); margin:0; font-weight:700;}
 .lbl{display:block; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); margin-bottom:2px;}
 
 /* ---------- Hero ---------- */
 .hero{
-  background:
-    radial-gradient(circle at 85% -10%, rgba(176,122,51,.16), transparent 55%),
-    var(--ink);
-  color:#F4ECDA;
-  padding:54px 24px 38px;
-  border-bottom:6px solid var(--kraft);
+  position:relative;
+  background:var(--blue);
+  color:#EEF0FC;
+  padding:54px 24px 40px;
+  overflow:hidden;
 }
-.hero__inner{max-width:1180px; margin:0 auto;}
+.hero::after{
+  content:'';
+  position:absolute; right:-90px; top:-90px;
+  width:300px; height:300px; border-radius:50%;
+  background:var(--red);
+  opacity:.9;
+}
+.hero::before{
+  content:'';
+  position:absolute; right:60px; bottom:-120px;
+  width:220px; height:220px; border-radius:50%;
+  background:#15269A;
+}
+.hero__inner{max-width:1180px; margin:0 auto; position:relative; z-index:2;}
 .hero__stamp{
   display:inline-block;
   font-family:'IBM Plex Mono',monospace;
   font-size:11px; letter-spacing:.14em;
-  border:1px solid rgba(244,236,218,.4);
-  padding:5px 10px;
-  border-radius:3px;
-  color:#E7CBA0;
+  background:var(--red);
+  padding:6px 12px;
+  border-radius:6px;
+  color:#fff;
+  font-weight:600;
   margin-bottom:18px;
 }
-.hero h1{color:#F8F2E2; font-size:clamp(28px,4vw,42px); font-weight:600; line-height:1.18;}
-.hero__sub{color:#CDA463; font-weight:500;}
-.hero__lede{max-width:640px; color:#D8CFB8; margin-top:14px; font-size:15.5px;}
+.hero h1{color:#fff; font-size:clamp(28px,4vw,44px); font-weight:700; line-height:1.16;}
+.hero__sub{color:#FFD9DD;}
+.hero__lede{max-width:620px; color:#D7DBF5; margin-top:14px; font-size:15.5px;}
 .hero__stats{display:flex; gap:34px; margin-top:30px; flex-wrap:wrap;}
 .stat{display:flex; flex-direction:column;}
-.stat__num{font-family:'Fraunces',serif; font-size:30px; color:#F4ECDA; font-weight:600;}
-.stat__label{font-size:12.5px; color:#B7AD92; margin-top:2px;}
+.stat__num{font-family:'Baloo 2',sans-serif; font-size:32px; color:#fff; font-weight:700;}
+.stat__label{font-size:12.5px; color:#C2C8EE; margin-top:2px;}
 
-/* ---------- Tabs (folder tabs) ---------- */
+/* ---------- Tabs (brand color pills) ---------- */
 .tabs{
-  display:flex; gap:6px;
+  display:flex; gap:10px;
   max-width:1180px; margin:0 auto;
-  padding:0 24px;
+  padding:18px 24px 0;
   position:sticky; top:0; z-index:20;
   background:var(--paper);
-  padding-top:14px;
 }
 .tab{
-  font-family:'IBM Plex Mono',monospace;
-  font-size:12.5px; letter-spacing:.04em; text-transform:uppercase;
-  background:#EDE4C9; color:var(--muted);
-  border:1px solid var(--rule);
-  border-bottom:none;
-  padding:11px 18px 9px;
-  border-radius:8px 8px 0 0;
+  font-family:'Baloo 2',sans-serif;
+  font-size:13.5px; letter-spacing:.01em;
+  background:#fff; color:var(--muted);
+  border:1.5px solid var(--rule);
+  padding:10px 20px;
+  border-radius:999px;
   cursor:pointer;
-  transform:translateY(6px);
-  transition:transform .15s ease, color .15s ease, background .15s ease;
+  font-weight:700;
+  transition:transform .15s ease, color .15s ease, background .15s ease, border-color .15s ease;
 }
-.tab:hover{transform:translateY(2px); color:var(--ink);}
-.tab.is-active{
-  background:var(--card); color:var(--ink);
-  transform:translateY(0);
-  border-bottom:1px solid var(--card);
-  box-shadow:0 -2px 10px rgba(0,0,0,.05);
-}
-.tab--ink.is-active{border-top:3px solid var(--ink);}
-.tab--teal.is-active{border-top:3px solid var(--teal);}
-.tab--kraft.is-active{border-top:3px solid var(--kraft);}
+.tab:hover{transform:translateY(-1px); color:var(--ink);}
+.tab.is-active{color:#fff; border-color:transparent; box-shadow:0 4px 14px rgba(0,0,0,.12);}
+.tab--ink.is-active{background:var(--blue);}
+.tab--blue.is-active{background:var(--blue);}
+.tab--red.is-active{background:var(--red);}
 
-main{max-width:1180px; margin:0 auto; padding:0 24px 60px;}
+main{max-width:1180px; margin:0 auto; padding:18px 24px 60px;}
 .panel{
   display:none;
   background:var(--card);
   border:1px solid var(--rule);
-  border-top:none;
-  border-radius:0 0 var(--radius) var(--radius);
+  border-radius:var(--radius);
   padding:34px 36px 44px;
+  margin-top:14px;
 }
 .panel.is-active{display:block;}
 
-.section-head{padding-bottom:18px; margin-bottom:26px; border-bottom:1px solid var(--rule);}
+.section-head{padding-bottom:18px; margin-bottom:26px; border-bottom:3px solid var(--blue); display:inline-block; width:100%;}
 .section-eyebrow{font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted);}
-.section-head h2{font-size:26px; margin-top:6px;}
-.section-head--teal{border-bottom-color:var(--teal);}
-.section-head--teal .section-eyebrow{color:var(--teal);}
-.section-head--kraft{border-bottom-color:var(--kraft);}
-.section-head--kraft .section-eyebrow{color:var(--kraft);}
+.section-head h2{font-size:27px; margin-top:6px;}
+.section-head--blue{border-bottom-color:var(--blue);}
+.section-head--blue .section-eyebrow{color:var(--blue); font-weight:700;}
+.section-head--red{border-bottom-color:var(--red);}
+.section-head--red .section-eyebrow{color:var(--red); font-weight:700;}
 .lede{color:var(--ink-soft); font-size:15.5px; max-width:760px;}
 .muted-note{color:var(--muted); font-size:13.5px;}
 
-.block-title{font-size:17px; margin:34px 0 14px; padding-top:4px;}
+.block-title{font-size:18px; margin:34px 0 14px; padding-top:4px;}
 .block-title__hint{font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--muted); text-transform:none; font-weight:500; margin-left:8px;}
 
 /* ---------- cards / bullets ---------- */
 .card-grid{display:grid; gap:18px; margin-top:18px;}
 .card-grid--2{grid-template-columns:1fr 1fr;}
 .card{
-  background:#FBF7EC; border:1px solid var(--rule); border-radius:var(--radius);
+  background:var(--paper); border:1px solid var(--rule); border-radius:var(--radius);
   padding:18px 20px;
 }
-.card--flag{background:#FBF1EC; border-color:#E6C9B8;}
-.card__title{font-size:15px; margin-bottom:8px; font-family:'Inter',sans-serif; font-weight:700; color:var(--ink);}
-.card__title--teal{color:var(--teal);}
-.card__title--kraft{color:var(--kraft);}
+.card--flag{background:var(--red-soft); border-color:#F6C7CE;}
+.card__title{font-size:15px; margin-bottom:8px; font-family:'Baloo 2',sans-serif; font-weight:700; color:var(--ink);}
+.card__title--blue{color:var(--blue);}
+.card__title--red{color:var(--red);}
 .bullets{margin:0; padding-left:18px;}
 .bullets li{margin-bottom:5px; font-size:14px;}
 
@@ -140,21 +156,21 @@ main{max-width:1180px; margin:0 auto; padding:0 24px 60px;}
 .legend-row{display:grid; grid-template-columns:repeat(4,1fr); gap:12px;}
 .legend-card{
   display:flex; flex-direction:column; gap:8px;
-  background:#FBF7EC; border:1px solid var(--rule); border-radius:var(--radius);
+  background:var(--paper); border:1px solid var(--rule); border-radius:var(--radius);
   padding:14px 14px 16px;
 }
-.legend-name{font-weight:700; font-size:13.5px; color:var(--ink);}
+.legend-name{font-weight:700; font-size:13.5px; color:var(--ink); font-family:'Baloo 2',sans-serif;}
 .legend-desc{font-size:12.5px; color:var(--muted); margin-top:3px;}
 .legend-lv{align-self:flex-start;}
 
 /* ---------- person cards ---------- */
 .person-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
 .person-card{
-  background:#FBF7EC; border:1px solid var(--rule); border-radius:var(--radius);
+  background:var(--paper); border:1px solid var(--rule); border-radius:var(--radius);
   padding:18px;
 }
 .person-card__top{display:flex; align-items:center; justify-content:space-between; margin-bottom:4px;}
-.person-name{font-family:'Fraunces',serif; font-size:19px; color:var(--ink); font-weight:600;}
+.person-name{font-family:'Baloo 2',sans-serif; font-size:19px; color:var(--ink); font-weight:700;}
 .person-role{font-size:12.5px; color:var(--muted); margin-bottom:12px;}
 .person-area, .person-tier{font-size:13px; margin-top:10px;}
 .person-summary{font-size:13.5px; margin-top:10px; line-height:1.5;}
@@ -162,22 +178,23 @@ main{max-width:1180px; margin:0 auto; padding:0 24px 60px;}
 /* ---------- accordions ---------- */
 .acc-list{display:flex; flex-direction:column; gap:8px;}
 .group-acc, .person-acc{
-  border:1px solid var(--rule); border-radius:8px; background:#FBF7EC; overflow:hidden;
+  border:1px solid var(--rule); border-radius:12px; background:var(--paper); overflow:hidden;
 }
 .group-acc summary, .person-acc summary{
   list-style:none; cursor:pointer;
   display:flex; align-items:center; gap:12px;
-  padding:13px 16px; font-weight:600; color:var(--ink);
+  padding:13px 16px; font-weight:700; color:var(--ink);
+  font-family:'Baloo 2',sans-serif;
 }
 .group-acc summary::-webkit-details-marker, .person-acc summary::-webkit-details-marker{display:none;}
 .group-acc summary::before, .person-acc summary::before{
-  content:'+'; font-family:'IBM Plex Mono',monospace; color:var(--muted);
-  width:16px; text-align:center; flex-shrink:0;
+  content:'+'; font-family:'IBM Plex Mono',monospace; color:var(--blue);
+  width:16px; text-align:center; flex-shrink:0; font-weight:700;
 }
-.group-acc[open] summary::before, .person-acc[open] summary::before{content:'–';}
+.group-acc[open] summary::before, .person-acc[open] summary::before{content:'–'; color:var(--red);}
 .group-name{flex:1; font-size:14.5px;}
-.group-sub{font-size:12px; color:var(--muted); font-weight:400;}
-.group-count{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--muted); text-transform:uppercase;}
+.group-sub{font-size:12px; color:var(--muted); font-weight:400; font-family:'Inter',sans-serif;}
+.group-count{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--muted); text-transform:uppercase; font-weight:500;}
 
 .table-wrap{overflow-x:auto; border-top:1px solid var(--rule);}
 .matrix-table{width:100%; border-collapse:collapse; font-size:12.5px; background:var(--card);}
@@ -186,37 +203,37 @@ main{max-width:1180px; margin:0 auto; padding:0 24px 60px;}
   letter-spacing:.03em; text-transform:uppercase; color:var(--muted);
   padding:9px 8px; border-bottom:1px solid var(--rule); white-space:normal;
 }
-.matrix-table td{padding:8px 8px; border-bottom:1px solid #EEE7D4; vertical-align:top;}
+.matrix-table td{padding:8px 8px; border-bottom:1px solid var(--rule); vertical-align:top;}
 .matrix-table tr:last-child td{border-bottom:none;}
 .task-cell{min-width:180px;}
 .area-cell{min-width:130px; color:var(--ink-soft);}
 .group-cell{min-width:120px; color:var(--ink-soft);}
 .lvl-cell{white-space:nowrap;}
 
-/* ---------- level chip ---------- */
+/* ---------- level chip (blue ramp = seniority depth, no black/gray) ---------- */
 .lvl{
-  font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:600;
-  padding:3px 7px; border-radius:4px; white-space:nowrap; display:inline-block;
+  font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700;
+  padding:3px 8px; border-radius:6px; white-space:nowrap; display:inline-block;
 }
-.lvl--l4{background:var(--ink); color:#F4ECDA;}
-.lvl--l3{background:var(--teal); color:#fff;}
-.lvl--l2{background:var(--kraft-soft); color:var(--kraft); border:1px solid var(--kraft);}
-.lvl--l1{background:#EFEAE0; color:var(--muted); border:1px solid var(--rule);}
-.lvl--lx{background:#EFEAE0; color:var(--ink-soft); border:1px solid var(--rule);}
+.lvl--l4{background:var(--blue); color:#fff;}
+.lvl--l3{background:var(--sec-indigo); color:#fff;}
+.lvl--l2{background:var(--blue-soft); color:var(--blue); border:1px solid #C9D0F2;}
+.lvl--l1{background:#F7F8FD; color:var(--muted); border:1px solid var(--rule);}
+.lvl--lx{background:#fff; color:var(--ink-soft); border:1px solid #C9D0F2;}
 
-/* ---------- role badges ---------- */
+/* ---------- role badges (brand swatch chips, no black/gray) ---------- */
 .badge{
-  font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:600;
-  letter-spacing:.02em; padding:2px 6px; border-radius:4px; white-space:nowrap; display:inline-block;
+  font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:700;
+  letter-spacing:.02em; padding:3px 7px; border-radius:6px; white-space:nowrap; display:inline-block;
 }
-.badge--lead{background:var(--ink); color:#F4ECDA;}
-.badge--owner{background:var(--teal); color:#fff;}
-.badge--doer{background:var(--kraft); color:#fff;}
-.badge--support{background:#EFEAE0; color:var(--support); border:1px solid var(--support);}
-.badge--input{background:#E7EEF1; color:var(--inputc); border:1px solid var(--inputc);}
-.badge--review{background:#F1E7EE; color:var(--review); border:1px solid var(--review);}
-.badge--other{background:#EFEAE0; color:var(--ink-soft);}
-.badge-empty{color:#C9BE9F;}
+.badge--lead{background:var(--blue); color:#fff;}
+.badge--owner{background:var(--sec-green); color:#fff;}
+.badge--doer{background:var(--red); color:#fff;}
+.badge--support{background:var(--sec-purple); color:#fff;}
+.badge--input{background:var(--sec-electric); color:#fff;}
+.badge--review{background:var(--sec-pink); color:#fff;}
+.badge--other{background:var(--blue-soft); color:var(--blue);}
+.badge-empty{color:#C2C8EE;}
 
 /* ---------- footer ---------- */
 .foot{max-width:1180px; margin:0 auto; padding:18px 24px 50px; color:var(--muted); font-size:12.5px; text-align:center;}
@@ -253,8 +270,8 @@ main{max-width:1180px; margin:0 auto; padding:0 24px 60px;}
 
 <nav class="tabs" id="tabs">
   <button class="tab tab--ink is-active" data-target="tongquan">Tổng quan</button>
-  <button class="tab tab--teal" data-target="ebteam">EB Team</button>
-  <button class="tab tab--kraft" data-target="exteam">EX Team</button>
+  <button class="tab tab--blue" data-target="ebteam">EB Team</button>
+  <button class="tab tab--red" data-target="exteam">EX Team</button>
 </nav>
 
 <main>
@@ -268,11 +285,11 @@ main{max-width:1180px; margin:0 auto; padding:0 24px 60px;}
 
   <div class="card-grid card-grid--2">
     <div class="card">
-      <h3 class="card__title card__title--kraft">Phạm vi công việc — EX</h3>
+      <h3 class="card__title card__title--red">Phạm vi công việc — EX</h3>
       <ul class="bullets"><li>Full Cycle tuyển dụng: screening, phỏng vấn, onboarding</li><li>Report on demand, báo cáo theo dõi chỉ số tuyển dụng, xây scheme</li><li>Theo dõi &amp; phân tích chỉ số tuyển dụng</li><li>Quản lý &amp; theo dõi scheme, lâp kế hoạch ngân sách, theo dõi scheme và quản lý ngân sách</li><li>Sourcing mảng agency và Fillipino candidates</li><li>Budget planning &amp; follow up</li><li>Petty cash</li><li>Tư vấn cho staff, tư vấn cho Vân/ Khánh các cases đặc biệt</li><li>Lớp TV</li><li>Competitor analysis</li></ul>
     </div>
     <div class="card">
-      <h3 class="card__title card__title--teal">Phạm vi công việc — EB</h3>
+      <h3 class="card__title card__title--blue">Phạm vi công việc — EB</h3>
       <ul class="bullets"><li>Training staff - quản lý performance &amp; tiến độ training</li><li>Theo dõi các chỉ số, báo cáo</li><li>Planning quý, năm, tư vấn plan events, plan tháng</li><li>Workload </li><li>Quản lý art direction, feedback</li><li>Proofread content</li><li>Quản lý orders + hiệu suất digital ads </li><li>Quản lý orders + hiệu suất website</li><li>Budget planning</li><li>Lâp kế hoạch ngân sách và quản lý ngân sách, quản lý về orders và đánh giá hiệu suất của digital ads</li><li>Theo dõi tiến độ training NV mới; mong muốn theo dõi sát hiệu quả tuyển dụng</li></ul>
     </div>
   </div>
@@ -298,7 +315,7 @@ main{max-width:1180px; margin:0 auto; padding:0 24px 60px;}
 </section>
 
 <section id="ebteam" class="panel">
-  <div class="section-head section-head--teal">
+  <div class="section-head section-head--blue">
     <span class="section-eyebrow">EB Team</span>
     <h2>Employer Branding — phân tầng công việc</h2>
     <p class="lede">3 người phụ trách · 9 nhóm công việc · 26 đầu việc theo nhóm</p>
@@ -804,7 +821,7 @@ main{max-width:1180px; margin:0 auto; padding:0 24px 60px;}
 </section>
 
 <section id="exteam" class="panel">
-  <div class="section-head section-head--kraft">
+  <div class="section-head section-head--red">
     <span class="section-eyebrow">EX Team</span>
     <h2>Expat Recruitment — phân tầng công việc</h2>
     <p class="lede">6 người phụ trách · 8 nhóm công việc · 120 đầu việc theo nhóm</p>
@@ -1191,79 +1208,79 @@ main{max-width:1180px; margin:0 auto; padding:0 24px 60px;}
               <td class="lvl-cell"><span class="lvl lvl--l4">L4</span></td>
               <td class="area-cell">Thông báo kết quả phỏng vấn &amp; đàm phán offer</td>
               <td class="task-cell">Offer, deal lương, các loại chế độ/bonus nếu có (theo scheme)</td>
-              <td><span class="badge badge--lead">LEAD</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td>
+              <td><span class="badge badge--lead">LEAD</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--doer">DOER</span></td>
             </tr>
             <tr>
               <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
               <td class="area-cell">Full Cycle tuyển dụng</td>
               <td class="task-cell">Screening, phỏng vấn, offer/deal lương, entry briefing, onboarding, assignment, hợp đồng và probation follow-up</td>
-              <td><span class="badge badge--input">INPUT</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--doer">DOER</span></td>
+              <td><span class="badge badge--input">INPUT</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--doer">DOER</span></td>
             </tr>
             <tr>
               <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
               <td class="area-cell">Phổ biến thủ tục tiền nhận việc cho giáo viên mới (Entry briefing &amp; follow up with WP team about AL)</td>
               <td class="task-cell">Overseas: phối hợp với team WP để brief gv về các thủ tục trước khi qua VN, follow up cho tới khi GV có được Approval letter để nhập cảnh VN / Local: phối hợp với team WP để brief gv về thủ tục border run</td>
-              <td><span class="badge-empty">—</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--input">INPUT</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge badge--support">SUPPORT</span></td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--doer">DOER</span></td>
             </tr>
             <tr>
               <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
               <td class="area-cell">Tiếp nhận yêu cầu tuyển dụng từ cơ sở</td>
               <td class="task-cell">Nhận đơn tuyển dụng từ cơ sở (kèm lý do tuyển dụng) và lên kế hoạch tuyển dụng</td>
-              <td><span class="badge badge--input">INPUT</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--input">INPUT</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge badge--support">SUPPORT</span></td>
+              <td><span class="badge badge--input">INPUT</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--doer">DOER</span></td>
             </tr>
             <tr>
               <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
               <td class="area-cell">Tổ chức chương trình &quot;Bạn đồng hành - Buddy Program&quot; cho giáo viên mới</td>
               <td class="task-cell">Liên hệ GVVN hoặc nhân viên cơ sở để offer làm buddy, mô tả yêu cầu</td>
-              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--owner">OWNER</span></td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--doer">DOER</span></td>
             </tr>
             <tr>
               <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
               <td class="area-cell">Tổ chức phỏng vấn, tiến hành phỏng vấn ứng viên và cập nhật kết quả phỏng vấn</td>
               <td class="task-cell">Nhập liệu kết quả phỏng vấn vào tracker và PM</td>
-              <td><span class="badge-empty">—</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--support">SUPPORT</span></td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--doer">DOER</span></td>
             </tr>
             <tr>
               <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
               <td class="area-cell">Tổ chức phỏng vấn, tiến hành phỏng vấn ứng viên và cập nhật kết quả phỏng vấn</td>
               <td class="task-cell">Tiến hành các bước liên hệ, set up phỏng vấn</td>
-              <td><span class="badge badge--input">INPUT</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--input">INPUT</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td>
+              <td><span class="badge badge--input">INPUT</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--doer">DOER</span></td>
             </tr>
             <tr>
               <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
               <td class="area-cell">Tổ chức phỏng vấn, tiến hành phỏng vấn ứng viên và cập nhật kết quả phỏng vấn</td>
               <td class="task-cell">phỏng vấn ứng viên</td>
-              <td><span class="badge-empty">—</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td>
             </tr>
             <tr>
               <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
               <td class="area-cell">Chuẩn bị các loại hợp đồng khác</td>
               <td class="task-cell">In HĐFT và trình ký</td>
-              <td><span class="badge-empty">—</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--doer">DOER</span></td>
             </tr>
             <tr>
               <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
               <td class="area-cell">Theo dõi kết quả thử việc của GV</td>
               <td class="task-cell">Nhận kết quả thử việc của GV do cơ sở gửi lên</td>
-              <td><span class="badge badge--input">INPUT</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td>
+              <td><span class="badge badge--input">INPUT</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--doer">DOER</span></td>
             </tr>
             <tr>
               <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
               <td class="area-cell">Thực hiện công tác tiếp nhận và ký kết hợp đồng với GV mới</td>
               <td class="task-cell">Cho GV ký OL, điền các form biểu, assign về cơ sở</td>
-              <td><span class="badge-empty">—</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--support">SUPPORT</span></td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--doer">DOER</span></td>
             </tr>
             <tr>
               <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
               <td class="area-cell">Tổ chức chương trình &quot;Bạn đồng hành - Buddy Program&quot; cho giáo viên mới</td>
               <td class="task-cell">Làm hồ sơ thanh toán chi phí buddy, nghiệm thu (bằng hình ảnh)</td>
-              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--doer">DOER</span></td>
             </tr>
             <tr>
               <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
               <td class="area-cell">Tổ chức chương trình &quot;Bạn đồng hành - Buddy Program&quot; cho giáo viên mới</td>
               <td class="task-cell">Lên chương trình cho buddy tour</td>
-              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--doer">DOER</span></td>
+              <td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge-empty">—</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--doer">DOER</span></td><td><span class="badge badge--doer">DOER</span></td>
             </tr>
             <tr>
               <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
@@ -1665,7 +1682,7 @@ main{max-width:1180px; margin:0 auto; padding:0 24px 60px;}
               <td class="lvl-cell"><span class="lvl lvl--l3">L3</span></td>
               <td class="area-cell">Đào tạo nhân viên mới</td>
               <td class="task-cell">Hướng dẫn và đào tạo nhân viên (on-going)</td>
-              <td><span class="badge badge--input">INPUT</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge-empty">—</span></td>
+              <td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--owner">OWNER</span></td><td><span class="badge badge--support">SUPPORT</span></td><td><span class="badge badge--support">SUPPORT</span></td>
             </tr>
             <tr>
               <td class="lvl-cell"><span class="lvl lvl--l2">L2</span></td>
